@@ -22,10 +22,14 @@
   z-index: 11;
   font-weight: bold;
   padding: 1em;
-  transition-duration: .5s;
+  transition-duration: .3s;
 }
 
 .sticky-view {
   position: sticky;
   top: 0;
+}
+
+span {
+  font-size: large;
 }

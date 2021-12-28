@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import OrderList from "./components/OrderList";
+import AdminPage from "./pages/AdminPage";
+import HomePage from "./pages/HomePage";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/admin" element={<AdminPage />}>
+        <Route
+          index
+          element={
+            <main
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh",
+              }}
+            >
+              <p style={{ fontSize: "1.5em", fontWeight: "bold" }}>
+                Welcome to Admin Panel
+              </p>
+            </main>
+          }
+        />
+        <Route path="orders" element={<OrderList />} />
+        <Route path="archive" element={<OrderList isArchive={true} />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;

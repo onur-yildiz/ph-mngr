@@ -11,25 +11,19 @@
   height: 100vh;
 }
 
-.center-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.section-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-box {
   position: absolute;
-  height: 30vh;
-  width: 60vw;
-  text-align: center;
-  z-index: 11;
-  font-weight: bold;
-  padding: 1em;
-  transition-duration: .3s;
+  height: 100%;
+  width: 100%;
+  /* transition-duration: .3s; */
 }
 
 .sticky-view {
   position: sticky;
   top: 0;
-}
-
-span {
-  font-size: large;
 }

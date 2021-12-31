@@ -27,3 +27,58 @@
   position: sticky;
   top: 0;
 }
+
+.maps-bg::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: url("../assets/undraw_my_current_location_re_whmt.svg");
+  background-size: cover;
+  opacity: .5;
+}
+
+.bio-bg::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -11;
+  background-image: url("../assets/undraw_personal_info_-0-okl.svg");
+  background-size: cover;
+  opacity: .5;
+}
+
+.photo-bg::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: url("../assets/undraw_moments_0y20.svg");
+  background-size: cover;
+  opacity: .5;
+}
+
+.search-bg::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -11;
+  background-image: url("../assets/undraw_file_searching_re_3evy.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: .5;
+}
+
+.carousel-bg::before {
+  content: '';
+  position: absolute;
+  height: 102%;
+  width: 100%;
+  z-index: -11;
+  background-image: url("../assets/undraw_file_searching_re_3evy.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: .5;
+}

@@ -6,6 +6,6 @@ declare type Order = {
   email: string;
   orderDate: string;
   deadline: string;
-  description: string;
+  desc: string;
   done: boolean = false;
 };

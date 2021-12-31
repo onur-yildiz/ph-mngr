@@ -1,0 +1,133 @@
+.product-carousel .slick-dots {
+  bottom: 0 !important;
+  height: 5vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.product-carousel .slick-dots li button {
+  height: .5rem !important;
+  background-color: white !important;
+}
+
+.carousel-button {
+  color: white;
+  position: absolute;
+  z-index: 22;
+  height: 100vh;
+  width: 5vw;
+  background-color: transparent;
+  border: none;
+}
+
+.carousel-button::before {
+  opacity: 0;
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transition: all .3s ease-in-out;
+}
+
+.carousel-button.left::before {
+  background: linear-gradient(90deg, rgba(2, 0, 36, 0.4), rgba(2, 0, 36, 0.15) 70%, rgba(9, 9, 121, 0) 100%);
+}
+
+.carousel-button.right::before {
+  background: linear-gradient(270deg, rgba(2, 0, 36, 0.4), rgba(2, 0, 36, 0.15) 70%, rgba(9, 9, 121, 0) 100%);
+}
+
+.carousel-button:hover::before {
+  opacity: 1;
+  border: none;
+}
+
+.carousel-button.left {
+  left: 0;
+}
+
+.carousel-button.right {
+  right: 0;
+}
+
+.product-carousel .slick-list {
+  height: 100%;
+}
+
+.product-carousel .slick-track {
+  height: 100%;
+}
+
+.product-carousel .slick-slide>div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-item {
+  display: flex !important;
+  padding: 0 5vw 5vh 5vw !important;
+}
+
+.product-carousel .ant-col {
+  display: flex;
+  justify-content: center;
+}
+
+.product-carousel .ant-card {
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 0 !important;
+  max-height: 45vh;
+  width: calc(100% - 32px);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  border: none;
+}
+
+.product-carousel .ant-card-cover {
+  margin: 0;
+}
+
+.product-carousel img {
+  height: 25vh;
+  width: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 768px) {
+  .product-carousel .ant-card {
+    width: 80vw;
+    max-height: 90vh;
+  }
+
+  img {
+    max-height: 30vh;
+    max-width: 80vw;
+    object-fit: cover;
+  }
+}
+
+.product-carousel .ant-card-body {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.product-carousel .ant-card-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.product-carousel .ant-card-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .25);
+}
+
+.product-carousel .ant-card-body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, .5);
+}

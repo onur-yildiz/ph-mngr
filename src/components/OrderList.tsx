@@ -83,9 +83,9 @@ const OrderList: FC<{ isArchive?: boolean }> = (props) => {
       columns={columns}
       expandable={{
         expandRowByClick: true,
-        expandedRowRender: (record: Order) => <span>{record.description}</span>,
+        expandedRowRender: (record: Order) => <span>{record.desc}</span>,
         rowExpandable: (record: Order) =>
-          record.description.length > 0 && record.description.trim() !== "",
+          record.desc.length > 0 && record.desc.trim() !== "",
       }}
       dataSource={orders.filter((order) => order.done === props.isArchive)}
       rowKey="uid"

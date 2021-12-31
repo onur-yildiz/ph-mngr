@@ -1,0 +1,26 @@
+.search-container,
+.search-container .ant-space {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search-container .ant-space-item {
+  width: 80%;
+}
+
+.search-container .ant-input-affix-wrapper {
+  border-top-left-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+}
+
+.search-container .ant-input-group-addon {
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* .ant-space button {
+  background-color: #364d79;
+  border-color: #364d79;
+} */

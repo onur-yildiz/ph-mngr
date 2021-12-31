@@ -1,17 +1,16 @@
-import { Button, Descriptions, Empty, Space } from "antd";
-import Search from "antd/lib/input/Search";
-import Title from "antd/lib/typography/Title";
-import Text from "antd/lib/typography/Text";
 import { useEffect, useState } from "react";
 import "./HomePage.css";
+import { ProductCarousel } from "../components/ProductCarousel";
+import { SearchContainer } from "../components/SearchContainer";
+import { BioContainer } from "../components/BioContainer";
+import { ContactInfoContainer } from "../components/ContactInfoContainer";
 
 const HomePage = () => {
   const scrollSectionHeight = window.innerHeight * 2;
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [sections, setSections] = useState<Array<Element | null>>([]);
   const viewHeight = window.innerHeight;
 
-  const [mockSearchData, setMockSearchData] = useState("");
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [sections, setSections] = useState<Array<Element | null>>([]);
 
   const topPosAnimator = (element: Element | null) => {
     if (!element) {
@@ -71,28 +70,13 @@ const HomePage = () => {
     const handleScroll = () => {
       setScrollPosition(container?.scrollTop);
     };
+
     container.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       container.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  // const Kart = () => (
-  //   <div className="flex-center" style={{ height: "100vh" }}>
-  //     <Card
-  //       hoverable
-  //       cover={
-  //         <img
-  //           alt="example"
-  //           src="https://i0.wp.com/codemyui.com/wp-content/uploads/2016/10/parallex-effect-sections-1.gif"
-  //         />
-  //       }
-  //     >
-  //       <Meta title="Europe Street beat" description="www.instagram.com" />
-  //     </Card>
-  //   </div>
-  // );
 
   return (
     <>
@@ -102,7 +86,7 @@ const HomePage = () => {
         // style={{ backgroundColor: "#0a2342" }}
       >
         <div
-          className="full-view flex-center"
+          className="full-view flex-center photo-bg"
           style={{ backgroundColor: "#0396A6" }}
         >
           <div
@@ -114,7 +98,12 @@ const HomePage = () => {
               })`,
             }}
           >
-            <Title className="unselectable">FotoMoto</Title>
+            <p
+              style={{ fontSize: "5em", color: "white", fontWeight: "bold" }}
+              className="unselectable"
+            >
+              FotoMoto
+            </p>
           </div>
         </div>
         <div
@@ -128,81 +117,18 @@ const HomePage = () => {
               className="full-view flex-center section-wrapper"
               style={{
                 // height: heightAnimator(sections[0]),
-                backgroundColor: "#EED5B7",
+                backgroundColor: "#77ba99",
               }}
             >
               <div
-                className="section-box flex-column hide-scrollbar"
+                className="section-box flex-center hide-scrollbar search-bg"
                 style={{
                   overflowY: "scroll",
                   transform: `translateY(${topPosAnimator(sections[0])})`,
                   padding: "1em",
                 }}
               >
-                <Space direction="vertical" size={viewHeight / 10}>
-                  {!Number(mockSearchData) && (
-                    <Search
-                      placeholder="Search your order"
-                      allowClear
-                      enterButton="Search"
-                      size="large"
-                      onSearch={(value) => setMockSearchData(value)}
-                    />
-                  )}
-                  {Number(mockSearchData) ? (
-                    <Descriptions
-                      title="User Info"
-                      extra={
-                        <Button
-                          type="primary"
-                          onClick={() => setMockSearchData("")}
-                        >
-                          Back
-                        </Button>
-                      }
-                      labelStyle={{
-                        fontWeight: "bold",
-                        backgroundColor: "rgba(255, 255, 255, 0.2)",
-                      }}
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.4)",
-                      }}
-                      column={{ xxl: 3, xl: 3, lg: 2, md: 1, sm: 1, xs: 1 }}
-                      bordered
-                    >
-                      <Descriptions.Item label="ID">
-                        {mockSearchData}
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Name">
-                        Zhou Maomao
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Date of Order">
-                        2021-08-17T00:50:31Z
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Estimated Delivery">
-                        2021-08-19T00:50:31Z
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Status">
-                        Active
-                      </Descriptions.Item>
-                      <Descriptions.Item label="Contact Info">
-                        Telephone: 530-854-8767
-                        <br />
-                        Email: test@test.com
-                      </Descriptions.Item>
-                    </Descriptions>
-                  ) : (
-                    mockSearchData.trim() !== "" && (
-                      <Empty
-                        description={
-                          <Text className="unselectable" type="secondary">
-                            Not found
-                          </Text>
-                        }
-                      />
-                    )
-                  )}
-                </Space>
+                <SearchContainer />
               </div>
             </div>
           </div>
@@ -213,24 +139,13 @@ const HomePage = () => {
             height: scrollSectionHeight + "px",
           }}
         >
-          <div className="sticky-view" style={{ backgroundColor: "#F25835" }}>
-            <div
-              className="full-view flex-center section-wrapper"
-              style={{
-                // height: heightAnimator(sections[1]),
-                backgroundColor: "#0396A6",
-              }}
-            >
-              <div className="section-box flex-center">
-                <span>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Explicabo dignissimos, quam exercitationem saepe quo porro
-                  molestias incidunt eum atque earum mollitia necessitatibus,
-                  facilis eligendi expedita voluptatem doloribus aliquid quae
-                  quia?
-                </span>
-              </div>
-            </div>
+          <div
+            className="full-view sticky-view flex-center section-wrapper carousel-bg"
+            style={{
+              backgroundColor: "#d33f49",
+            }}
+          >
+            <ProductCarousel />
           </div>
         </div>
         <div
@@ -248,21 +163,17 @@ const HomePage = () => {
               }}
             >
               <div
-                className="section-box flex-center"
+                className="section-box flex-center bio-bg"
                 style={{
                   transform: `translateY(${topPosAnimator(sections[2])})`,
                 }}
               >
-                <span>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
-                  natus impedit temporibus, rem voluptate ipsa hic voluptatem
-                  velit maxime, a aut fuga minima enim porro eaque molestiae
-                  sint sequi molestias.
-                </span>
+                <BioContainer />
               </div>
             </div>
           </div>
         </div>
+        {/* <div style={{ height: "1em", backgroundColor: "whitesmoke" }} /> */}
         <div
           id="hm-section-4"
           style={{
@@ -274,21 +185,16 @@ const HomePage = () => {
               className="full-view flex-center section-wrapper"
               style={{
                 // height: heightAnimator(sections[3]),
-                backgroundColor: "#0396A6",
+                backgroundColor: "#96ABC3",
               }}
             >
               <div
-                className="section-box flex-center"
-                style={{
-                  transform: `translateY(${topPosAnimator(sections[3])})`,
-                }}
+                className="section-box flex-center maps-bg"
+                // style={{
+                //   transform: `translateY(${topPosAnimator(sections[3])})`,
+                // }}
               >
-                <span>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
-                  natus impedit temporibus, rem voluptate ipsa hic voluptatem
-                  velit maxime, a aut fuga minima enim porro eaque molestiae
-                  sint sequi molestias.
-                </span>
+                <ContactInfoContainer />
               </div>
             </div>
           </div>

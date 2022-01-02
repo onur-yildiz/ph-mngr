@@ -1,5 +1,5 @@
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { Card, Col, Row } from "antd";
+import { Button, Card, Col, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import Carousel, { CarouselRef } from "antd/lib/carousel";
 import { useEffect, useRef, useState } from "react";
@@ -241,7 +241,7 @@ export const ProductCarousel = () => {
     for (let i = 0; i < items.length; i += rowLimit * columnLimit) {
       pages.push(items.slice(i, i + rowLimit * columnLimit));
     }
-    console.log([pages, rowLimit, columnLimit, gutter]);
+    // console.log([pages, rowLimit, columnLimit, gutter]);
 
     //generate carousel content
     const carouselContent = [];
@@ -302,22 +302,24 @@ export const ProductCarousel = () => {
 
   return (
     <div className="full-view product-carousel">
-      <button
+      <Button
         className="carousel-button left"
+        type="ghost"
+        shape="circle"
+        icon={<LeftOutlined />}
         onClick={() => {
           carouselRef.current!.prev();
         }}
-      >
-        <LeftOutlined />
-      </button>
-      <button
+      />
+      <Button
         className="carousel-button right"
+        type="ghost"
+        shape="circle"
+        icon={<RightOutlined />}
         onClick={() => {
           carouselRef.current!.next();
         }}
-      >
-        <RightOutlined />
-      </button>
+      />
       <Carousel
         className="full-view"
         ref={carouselRef}

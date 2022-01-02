@@ -38,24 +38,24 @@ const HomePage = () => {
     return "0";
   };
 
-  // const heightAnimator = (element: Element | null) => {
-  //   if (!element) {
-  //     return "";
-  //   }
+  const heightAnimator = (element: Element | null) => {
+    if (!element) {
+      return "";
+    }
 
-  //   const elementY = element.getBoundingClientRect().top;
+    const elementY = element.getBoundingClientRect().top;
 
-  //   if (elementY <= viewHeight && elementY >= 0) {
-  //     return (1 - elementY / viewHeight) * 100 + "vh";
-  //   }
-  //   if (
-  //     elementY <= viewHeight - scrollSectionHeight &&
-  //     elementY >= -scrollSectionHeight
-  //   ) {
-  //     return scrollSectionHeight + elementY;
-  //   }
-  //   return "";
-  // };
+    if (elementY <= viewHeight && elementY >= 0) {
+      return (1 - elementY / viewHeight) * 100 + "vh";
+    }
+    if (
+      elementY <= viewHeight - scrollSectionHeight &&
+      elementY >= -scrollSectionHeight
+    ) {
+      return scrollSectionHeight + elementY;
+    }
+    return "";
+  };
 
   useEffect(() => {
     setSections([
@@ -80,11 +80,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div
-        id="hm-container"
-        className="hide-scrollbar"
-        // style={{ backgroundColor: "#0a2342" }}
-      >
+      <div id="hm-container" className="hide-scrollbar">
         <div
           className="full-view flex-center photo-bg"
           style={{ backgroundColor: "#0396A6" }}

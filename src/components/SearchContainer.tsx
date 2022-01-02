@@ -17,7 +17,7 @@ export const SearchContainer = () => {
             placeholder="Search your order"
             allowClear
             enterButton="Search"
-            size="large"
+            size="middle"
             onSearch={(value) => setMockSearchData(value)}
           />
         )}

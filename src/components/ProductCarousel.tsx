@@ -326,6 +326,11 @@ export const ProductCarousel = () => {
         style={{
           padding: "1em",
         }}
+        autoplay
+        autoplaySpeed={5000}
+        pauseOnFocus
+        draggable
+        lazyLoad="ondemand"
       >
         {generateCarouselContent(products)}
       </Carousel>

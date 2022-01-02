@@ -258,14 +258,14 @@ export const ProductCarousel = () => {
 
       for (let j = 0; j < page.length; j++) {
         pageContent.push(
-          <Col span={span} offset={j ? 0 : offset}>
+          <Col key={i * rowLimit + j} span={span} offset={j ? 0 : offset}>
             {createCard(page[j])}
           </Col>
         );
       }
 
       carouselContent.push(
-        <Row className="carousel-item" gutter={[gutter, gutter]}>
+        <Row key={i} className="carousel-item" gutter={[gutter, gutter]}>
           {pageContent}
         </Row>
       );

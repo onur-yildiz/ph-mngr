@@ -301,7 +301,7 @@ export const ProductCarousel = () => {
   useEffect(() => {});
 
   return (
-    <div className="full-view product-carousel">
+    <div className="product-carousel">
       <Button
         className="carousel-button left"
         type="ghost"

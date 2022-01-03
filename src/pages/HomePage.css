@@ -31,7 +31,7 @@
 }
 
 .section-box {
-  position: absolute;
+  /* position: absolute; */
   height: 100%;
   width: 100%;
   /* transition-duration: .3s; */

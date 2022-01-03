@@ -7,7 +7,8 @@ import { ContactInfoContainer } from "../components/ContactInfoContainer";
 import { BackTop } from "antd";
 
 const HomePage = () => {
-  const scrollSectionHeight = window.innerHeight * 2;
+  const sectionHeightProportion = 1.3;
+  const scrollSectionHeight = window.innerHeight * sectionHeightProportion;
   const viewHeight = window.innerHeight;
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,12 +49,7 @@ const HomePage = () => {
       elementY <= viewHeight - scrollSectionHeight &&
       elementY >= -scrollSectionHeight
     ) {
-      const x =
-        (1 -
-          (elementY + scrollSectionHeight) /
-            (scrollSectionHeight - viewHeight)) *
-        50;
-
+      const x = -(((elementY + scrollSectionHeight) / viewHeight) * 50 - 50);
       return x + "%";
     }
     return "0";
@@ -153,20 +149,23 @@ const HomePage = () => {
             height: scrollSectionHeight + "px",
           }}
         >
-          <div className="sticky-view" style={{ backgroundColor: "#0396A6" }}>
+          <div
+            className="sticky-view section-wrapper"
+            style={{ backgroundColor: "#0396A6" }}
+          >
             <div
-              className="full-view flex-center section-wrapper"
+              className="full-view search-bg"
               style={{
                 backgroundColor: "#77ba99",
+                transform: `translateY(${topPosAnimator(
+                  sectionsRef.current[1]
+                )})`,
               }}
             >
               <div
-                className="section-box flex-center hide-scrollbar search-bg"
+                className="section-box flex-center hide-scrollbar"
                 style={{
                   overflowY: "scroll",
-                  transform: `translateY(${topPosAnimator(
-                    sectionsRef.current[1]
-                  )})`,
                   padding: "1em",
                 }}
               >
@@ -183,12 +182,23 @@ const HomePage = () => {
           }}
         >
           <div
-            className="full-view sticky-view flex-center section-wrapper carousel-bg"
+            className="sticky-view section-wrapper"
             style={{
               backgroundColor: "#d33f49",
             }}
           >
-            <ProductCarousel />
+            <div
+              className="full-view carousel-bg"
+              style={
+                {
+                  // transform: `translateY(${topPosAnimator(
+                  //   sectionsRef.current[2]
+                  // )})`,
+                }
+              }
+            >
+              <ProductCarousel />
+            </div>
           </div>
         </div>
         <div
@@ -198,27 +208,25 @@ const HomePage = () => {
             height: scrollSectionHeight + "px",
           }}
         >
-          <div className="sticky-view" style={{ backgroundColor: "#0396A6" }}>
+          <div
+            className="sticky-view section-wrapper"
+            style={{ backgroundColor: "#0396A6" }}
+          >
             <div
-              className="full-view flex-center section-wrapper"
+              className="full-view bio-bg"
               style={{
                 backgroundColor: "#F25835",
+                transform: `translateY(${topPosAnimator(
+                  sectionsRef.current[3]
+                )})`,
               }}
             >
-              <div
-                className="section-box flex-center bio-bg"
-                style={{
-                  transform: `translateY(${topPosAnimator(
-                    sectionsRef.current[3]
-                  )})`,
-                }}
-              >
+              <div className="section-box flex-center">
                 <BioContainer />
               </div>
             </div>
           </div>
         </div>
-        {/* <div style={{ height: "1em", backgroundColor: "whitesmoke" }} /> */}
         <div
           ref={(el) => (sectionsRef.current[4] = el!)}
           id="hm-section-4"
@@ -226,19 +234,17 @@ const HomePage = () => {
             height: scrollSectionHeight + "px",
           }}
         >
-          <div className="sticky-view" style={{ backgroundColor: "#F2836B" }}>
+          <div
+            className="sticky-view section-wrapper"
+            style={{ backgroundColor: "#F2836B" }}
+          >
             <div
-              className="full-view flex-center section-wrapper"
+              className="full-view maps-bg"
               style={{
                 backgroundColor: "#96ABC3",
               }}
             >
-              <div
-                className="section-box flex-center maps-bg"
-                // style={{
-                //   transform: `translateY(${topPosAnimator(sections[4])})`,
-                // }}
-              >
+              <div className="section-box flex-center">
                 <ContactInfoContainer />
               </div>
             </div>

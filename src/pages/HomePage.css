@@ -47,6 +47,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
+  z-index: -11;
   background-image: url("../assets/undraw_my_current_location_re_whmt.svg");
   background-size: cover;
   opacity: .5;
@@ -58,6 +59,7 @@
   height: 100%;
   width: 100%;
   z-index: -11;
+  background-color: "#0396A6";
   background-image: url("../assets/undraw_personal_info_-0-okl.svg");
   background-size: cover;
   opacity: .5;
@@ -68,6 +70,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
+  z-index: -11;
   background-image: url("../assets/undraw_moments_0y20.svg");
   background-size: cover;
   opacity: .5;
@@ -95,4 +98,13 @@
   background-size: cover;
   background-repeat: no-repeat;
   opacity: .5;
+}
+
+.title {
+  width: 50%;
+  text-align: center;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, 0);
 }

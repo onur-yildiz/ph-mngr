@@ -5,6 +5,9 @@ import { SearchContainer } from "../components/SearchContainer";
 import { BioContainer } from "../components/BioContainer";
 import { ContactInfoContainer } from "../components/ContactInfoContainer";
 import { BackTop } from "antd";
+import { NavBar } from "../components/NavBar";
+import { isMobile } from "react-device-detect";
+import Title from "antd/lib/typography/Title";
 
 const HomePage = () => {
   const sectionHeightProportion = 1.3;
@@ -16,12 +19,13 @@ const HomePage = () => {
   const backTopRef = useRef<HTMLDivElement>(null);
   const tickingRef = useRef<boolean>(false);
 
-  type ScrollState = { scrollPosition: number; isScrollingUp: boolean };
-  const [scrollState, scrollDispatch] = useReducer<
-    Reducer<
-      ScrollState,
-      Partial<ScrollState> | ((arg0: ScrollState) => Partial<ScrollState>)
-    >
+  type State = {
+    scrollPosition: number;
+    isScrollingUp: boolean;
+    isAffixed: boolean;
+  };
+  const [state, dispatch] = useReducer<
+    Reducer<State, Partial<State> | ((arg0: State) => Partial<State>)>
   >(
     (state, newState) => {
       const newWithPrevState =
@@ -31,6 +35,7 @@ const HomePage = () => {
     {
       scrollPosition: 0,
       isScrollingUp: false,
+      isAffixed: false,
     }
   );
 
@@ -78,11 +83,13 @@ const HomePage = () => {
     const container = containerRef.current!;
 
     const handleScroll = () => {
-      scrollDispatch((prevState) => {
+      dispatch((prevState) => {
         return {
           scrollPosition: container.scrollTop,
           isScrollingUp:
             container.scrollTop < prevState.scrollPosition ? true : false,
+          isAffixed:
+            prevState.scrollPosition > window.innerHeight / 2 ? true : false,
         };
       });
     };
@@ -97,7 +104,7 @@ const HomePage = () => {
   useEffect(() => {
     const displayBackTop = () => {
       const classList = backTopRef.current!.classList;
-      if (scrollState.isScrollingUp) {
+      if (state.isScrollingUp) {
         !classList.contains("show") && classList.add("show");
         setTimeout(() => {
           tickingRef.current = false;
@@ -110,36 +117,50 @@ const HomePage = () => {
       tickingRef.current = true;
       displayBackTop();
     }
-  }, [scrollState.isScrollingUp, scrollState.scrollPosition]);
+  }, [state.isScrollingUp, state.scrollPosition]);
 
   return (
     <>
       <div className="hm-back-top" ref={backTopRef}>
         <BackTop target={() => containerRef.current!} />
       </div>
-      <div id="hm-container" ref={containerRef} className="hide-scrollbar">
+      <div
+        id="hm-container"
+        ref={containerRef}
+        className="hide-scrollbar"
+        style={{ position: "relative" }}
+      >
+        {!isMobile && <NavBar affixed={state.isAffixed} />}
         <div
           ref={(el) => (sectionsRef.current[0] = el!)}
-          className="full-view flex-center photo-bg"
-          style={{
-            backgroundColor: "#0396A6",
-          }}
+          id="hm-section-0"
+          className="full-view"
         >
           <div
-            style={{
-              transform: `translateY(${
-                scrollState.scrollPosition / 2
-              }px) scale(${
-                (viewHeight - scrollState.scrollPosition / 2) / viewHeight
-              })`,
-            }}
+            className="sticky-view"
+            style={{ backgroundColor: "#0396A6" }}
+            // style={
+            //   {
+            //     transform: `translateY(${
+            //       state.scrollPosition / 2
+            //     }px) scale(${
+            //       (viewHeight - state.scrollPosition / 2) / viewHeight
+            //     })`,
+            //   }
+            // }
           >
-            <p
-              style={{ fontSize: "5em", color: "white", fontWeight: "bold" }}
-              className="unselectable"
+            <div
+              className="full-view photo-bg"
+              style={{
+                transform: `translateY(${topPosAnimator(
+                  sectionsRef.current[0]
+                )})`,
+              }}
             >
-              FotoMoto
-            </p>
+              <div className="section-box title">
+                <Title level={1}>FotoMoto</Title>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -151,12 +172,11 @@ const HomePage = () => {
         >
           <div
             className="sticky-view section-wrapper"
-            style={{ backgroundColor: "#0396A6" }}
+            style={{ backgroundColor: "#77ba99" }}
           >
             <div
               className="full-view search-bg"
               style={{
-                backgroundColor: "#77ba99",
                 transform: `translateY(${topPosAnimator(
                   sectionsRef.current[1]
                 )})`,
@@ -210,12 +230,11 @@ const HomePage = () => {
         >
           <div
             className="sticky-view section-wrapper"
-            style={{ backgroundColor: "#0396A6" }}
+            style={{ backgroundColor: "#F25835" }}
           >
             <div
               className="full-view bio-bg"
               style={{
-                backgroundColor: "#F25835",
                 transform: `translateY(${topPosAnimator(
                   sectionsRef.current[3]
                 )})`,
@@ -236,14 +255,9 @@ const HomePage = () => {
         >
           <div
             className="sticky-view section-wrapper"
-            style={{ backgroundColor: "#F2836B" }}
+            style={{ backgroundColor: "#96ABC3" }}
           >
-            <div
-              className="full-view maps-bg"
-              style={{
-                backgroundColor: "#96ABC3",
-              }}
-            >
+            <div className="full-view maps-bg">
               <div className="section-box flex-center">
                 <ContactInfoContainer />
               </div>

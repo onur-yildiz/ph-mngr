@@ -12,6 +12,19 @@
   height: 100vh;
 }
 
+.hm-back-top>div {
+  bottom: 2em;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  z-index: 100;
+  transition: all .3s ease-in-out;
+}
+
+.hm-back-top.show>div {
+  opacity: 1 !important;
+}
+
 .section-wrapper {
   position: relative;
   overflow: hidden;

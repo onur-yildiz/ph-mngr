@@ -1,16 +1,37 @@
-import { useEffect, useState } from "react";
+import { Reducer, useEffect, useReducer, useRef } from "react";
 import "./HomePage.css";
 import { ProductCarousel } from "../components/ProductCarousel";
 import { SearchContainer } from "../components/SearchContainer";
 import { BioContainer } from "../components/BioContainer";
 import { ContactInfoContainer } from "../components/ContactInfoContainer";
+import { BackTop } from "antd";
 
 const HomePage = () => {
   const scrollSectionHeight = window.innerHeight * 2;
   const viewHeight = window.innerHeight;
 
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [sections, setSections] = useState<Array<Element | null>>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionsRef = useRef<HTMLDivElement[]>([]);
+  const backTopRef = useRef<HTMLDivElement>(null);
+  const tickingRef = useRef<boolean>(false);
+
+  type ScrollState = { scrollPosition: number; isScrollingUp: boolean };
+  const [scrollState, scrollDispatch] = useReducer<
+    Reducer<
+      ScrollState,
+      Partial<ScrollState> | ((arg0: ScrollState) => Partial<ScrollState>)
+    >
+  >(
+    (state, newState) => {
+      const newWithPrevState =
+        typeof newState === "function" ? newState(state) : newState;
+      return { ...state, ...newWithPrevState };
+    },
+    {
+      scrollPosition: 0,
+      isScrollingUp: false,
+    }
+  );
 
   const topPosAnimator = (element: Element | null) => {
     if (!element) {
@@ -38,37 +59,36 @@ const HomePage = () => {
     return "0";
   };
 
-  const heightAnimator = (element: Element | null) => {
-    if (!element) {
-      return "";
-    }
+  // const heightAnimator = (element: Element | null) => {
+  //   if (!element) {
+  //     return "";
+  //   }
 
-    const elementY = element.getBoundingClientRect().top;
+  //   const elementY = element.getBoundingClientRect().top;
 
-    if (elementY <= viewHeight && elementY >= 0) {
-      return (1 - elementY / viewHeight) * 100 + "vh";
-    }
-    if (
-      elementY <= viewHeight - scrollSectionHeight &&
-      elementY >= -scrollSectionHeight
-    ) {
-      return scrollSectionHeight + elementY;
-    }
-    return "";
-  };
+  //   if (elementY <= viewHeight && elementY >= 0) {
+  //     return (1 - elementY / viewHeight) * 100 + "vh";
+  //   }
+  //   if (
+  //     elementY <= viewHeight - scrollSectionHeight &&
+  //     elementY >= -scrollSectionHeight
+  //   ) {
+  //     return scrollSectionHeight + elementY;
+  //   }
+  //   return "";
+  // };
 
   useEffect(() => {
-    setSections([
-      document.querySelector("#hm-section-1"),
-      document.querySelector("#hm-section-2"),
-      document.querySelector("#hm-section-3"),
-      document.querySelector("#hm-section-4"),
-    ]);
-
-    const container = document.querySelector("#hm-container")!;
+    const container = containerRef.current!;
 
     const handleScroll = () => {
-      setScrollPosition(container?.scrollTop);
+      scrollDispatch((prevState) => {
+        return {
+          scrollPosition: container.scrollTop,
+          isScrollingUp:
+            container.scrollTop < prevState.scrollPosition ? true : false,
+        };
+      });
     };
 
     container.addEventListener("scroll", handleScroll, { passive: true });
@@ -78,19 +98,43 @@ const HomePage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const displayBackTop = () => {
+      const classList = backTopRef.current!.classList;
+      if (scrollState.isScrollingUp) {
+        !classList.contains("show") && classList.add("show");
+        setTimeout(() => {
+          tickingRef.current = false;
+          backTopRef.current!.classList.remove("show");
+        }, 3000);
+      } else tickingRef.current = false;
+    };
+
+    if (!tickingRef.current) {
+      tickingRef.current = true;
+      displayBackTop();
+    }
+  }, [scrollState.isScrollingUp, scrollState.scrollPosition]);
+
   return (
     <>
-      <div id="hm-container" className="hide-scrollbar">
+      <div className="hm-back-top" ref={backTopRef}>
+        <BackTop target={() => containerRef.current!} />
+      </div>
+      <div id="hm-container" ref={containerRef} className="hide-scrollbar">
         <div
+          ref={(el) => (sectionsRef.current[0] = el!)}
           className="full-view flex-center photo-bg"
-          style={{ backgroundColor: "#0396A6" }}
+          style={{
+            backgroundColor: "#0396A6",
+          }}
         >
           <div
             style={{
-              // opacity: 1.5 - scrollPosition / viewHeight,
-              // color: `rgba(${scrollPosition}, ${scrollPosition}, ${scrollPosition}, ${1})`,
-              transform: `translateY(${scrollPosition / 2}px) scale(${
-                (viewHeight - scrollPosition / 2) / viewHeight
+              transform: `translateY(${
+                scrollState.scrollPosition / 2
+              }px) scale(${
+                (viewHeight - scrollState.scrollPosition / 2) / viewHeight
               })`,
             }}
           >
@@ -103,6 +147,7 @@ const HomePage = () => {
           </div>
         </div>
         <div
+          ref={(el) => (sectionsRef.current[1] = el!)}
           id="hm-section-1"
           style={{
             height: scrollSectionHeight + "px",
@@ -112,7 +157,6 @@ const HomePage = () => {
             <div
               className="full-view flex-center section-wrapper"
               style={{
-                // height: heightAnimator(sections[0]),
                 backgroundColor: "#77ba99",
               }}
             >
@@ -120,7 +164,9 @@ const HomePage = () => {
                 className="section-box flex-center hide-scrollbar search-bg"
                 style={{
                   overflowY: "scroll",
-                  transform: `translateY(${topPosAnimator(sections[0])})`,
+                  transform: `translateY(${topPosAnimator(
+                    sectionsRef.current[1]
+                  )})`,
                   padding: "1em",
                 }}
               >
@@ -130,6 +176,7 @@ const HomePage = () => {
           </div>
         </div>
         <div
+          ref={(el) => (sectionsRef.current[2] = el!)}
           id="hm-section-2"
           style={{
             height: scrollSectionHeight + "px",
@@ -145,6 +192,7 @@ const HomePage = () => {
           </div>
         </div>
         <div
+          ref={(el) => (sectionsRef.current[3] = el!)}
           id="hm-section-3"
           style={{
             height: scrollSectionHeight + "px",
@@ -154,14 +202,15 @@ const HomePage = () => {
             <div
               className="full-view flex-center section-wrapper"
               style={{
-                // height: heightAnimator(sections[2]),
                 backgroundColor: "#F25835",
               }}
             >
               <div
                 className="section-box flex-center bio-bg"
                 style={{
-                  transform: `translateY(${topPosAnimator(sections[2])})`,
+                  transform: `translateY(${topPosAnimator(
+                    sectionsRef.current[3]
+                  )})`,
                 }}
               >
                 <BioContainer />
@@ -171,6 +220,7 @@ const HomePage = () => {
         </div>
         {/* <div style={{ height: "1em", backgroundColor: "whitesmoke" }} /> */}
         <div
+          ref={(el) => (sectionsRef.current[4] = el!)}
           id="hm-section-4"
           style={{
             height: scrollSectionHeight + "px",
@@ -180,14 +230,13 @@ const HomePage = () => {
             <div
               className="full-view flex-center section-wrapper"
               style={{
-                // height: heightAnimator(sections[3]),
                 backgroundColor: "#96ABC3",
               }}
             >
               <div
                 className="section-box flex-center maps-bg"
                 // style={{
-                //   transform: `translateY(${topPosAnimator(sections[3])})`,
+                //   transform: `translateY(${topPosAnimator(sections[4])})`,
                 // }}
               >
                 <ContactInfoContainer />

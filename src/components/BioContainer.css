@@ -1,4 +1,11 @@
-.bio-container>div {
+.bio-container-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bio-container-col>div {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -12,6 +19,7 @@
   margin: 1em;
   max-height: 60vh;
   width: 40%;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
 }
@@ -51,8 +59,6 @@
 
 
 .bio-container-title {
-  position: absolute;
-  top: -20%;
   color: white;
 }
 

@@ -23,6 +23,7 @@ export const SearchContainer = () => {
         )}
         {Number(mockSearchData) ? (
           <Descriptions
+            className="search-result"
             title="Order Info"
             extra={
               <Button type="primary" onClick={() => setMockSearchData("")}>
@@ -55,22 +56,22 @@ export const SearchContainer = () => {
             </Descriptions.Item>
           </Descriptions>
         ) : (
-          mockSearchData.trim() !== "" && (
-            <div
-              style={{
-                backgroundColor: "white",
-                padding: "1em",
-              }}
-            >
-              <Empty
-                description={
-                  <Text className="unselectable" type="secondary">
-                    Not found
-                  </Text>
-                }
-              />
-            </div>
-          )
+          <div
+            className="empty-search-container"
+            style={{
+              opacity: mockSearchData.trim() === "" ? "0" : "1",
+              backgroundColor: "white",
+              padding: "1em",
+            }}
+          >
+            <Empty
+              description={
+                <Text className="unselectable" type="secondary">
+                  Not found
+                </Text>
+              }
+            />
+          </div>
         )}
       </Space>
     </div>

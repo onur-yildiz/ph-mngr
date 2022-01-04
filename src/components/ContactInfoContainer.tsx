@@ -24,9 +24,6 @@ export const ContactInfoContainer = () => {
           <Descriptions.Item label="Address">
             No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
           </Descriptions.Item>
-          <Descriptions.Item label="Address">
-            No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-          </Descriptions.Item>
           <Descriptions.Item label="Phone">(+90)555 888 4455</Descriptions.Item>
           <Descriptions.Item label="Email">test@test.com</Descriptions.Item>
         </Descriptions>

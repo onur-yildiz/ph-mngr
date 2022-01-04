@@ -40,8 +40,8 @@ const HomePage = () => {
   );
 
   const topPosAnimator = (element: Element | null) => {
-    if (!element) {
-      return "";
+    if (!element || isMobile) {
+      return "0";
     }
 
     const elementY = element.getBoundingClientRect().top;

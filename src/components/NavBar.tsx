@@ -1,6 +1,7 @@
 import {
   AppstoreOutlined,
   FileSearchOutlined,
+  HomeOutlined,
   IdcardOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
@@ -13,7 +14,27 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
   const [showTitle, setShowTitle] = useState(false);
 
   const handleClick = (e: any) => {
-    console.log("click ", e);
+    let element: Element | null = null;
+    switch (e.key) {
+      case "home":
+        element = document.querySelector("#hm-section-0")!;
+        break;
+      case "search":
+        element = document.querySelector("#hm-section-1")!;
+        break;
+      case "products":
+        element = document.querySelector("#hm-section-2")!;
+        break;
+      case "bio":
+        element = document.querySelector("#hm-section-3")!;
+        break;
+      case "contact":
+        element = document.querySelector("#hm-section-4")!;
+        break;
+      default:
+        break;
+    }
+    element?.scrollIntoView({ behavior: "smooth" });
     setSelected(e.key);
   };
 
@@ -44,6 +65,17 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
           selectedKeys={selected}
           mode={showTitle ? "horizontal" : "vertical"}
         >
+          <Menu.Item className="hs-menu-item" key="home">
+            <Popover
+              content="Home"
+              trigger={"hover"}
+              placement="bottom"
+              mouseEnterDelay={0.5}
+            >
+              <HomeOutlined />
+            </Popover>
+            {showTitle && " Home"}
+          </Menu.Item>
           <Menu.Item className="hs-menu-item" key="search">
             <Popover
               content="Search Orders"

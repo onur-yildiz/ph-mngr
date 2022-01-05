@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import OrderList from "./components/OrderList";
+import OrderList from "./components/OrdersTable";
+import Products from "./components/ProductsTable";
 import AdminPage from "./pages/AdminPage";
 import HomePage from "./pages/HomePage";
 
@@ -35,6 +36,7 @@ export default function App() {
         />
         <Route path="orders" element={<OrderList />} />
         <Route path="archive" element={<OrderList isArchive={true} />} />
+        <Route path="products" element={<Products />} />
       </Route>
     </Routes>
   );

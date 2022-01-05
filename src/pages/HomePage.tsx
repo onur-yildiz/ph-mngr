@@ -23,7 +23,8 @@ const HomePage = () => {
   type State = {
     scrollPosition: number;
     isScrollingUp: boolean;
-    isAffixed: boolean;
+    isNavbarAffixed: boolean;
+    selectedSection: number;
   };
   const [state, dispatch] = useReducer<
     Reducer<State, Partial<State> | ((arg0: State) => Partial<State>)>
@@ -36,7 +37,8 @@ const HomePage = () => {
     {
       scrollPosition: 0,
       isScrollingUp: false,
-      isAffixed: false,
+      isNavbarAffixed: false,
+      selectedSection: 0,
     }
   );
 
@@ -64,22 +66,37 @@ const HomePage = () => {
   useEffect(() => {
     const container = containerRef.current!;
 
-    const handleScroll = () => {
+    const handleScrollNav = () => {
       dispatch((prevState) => {
         return {
           scrollPosition: container.scrollTop,
           isScrollingUp:
             container.scrollTop < prevState.scrollPosition ? true : false,
-          isAffixed:
-            prevState.scrollPosition > window.innerHeight / 2 ? true : false,
+          isNavbarAffixed:
+            prevState.scrollPosition > window.innerHeight / 2 && !isMobile
+              ? true
+              : false,
+          selectedSection: sectionsRef.current!.findIndex((section, index) => {
+            const sectionY = section.getBoundingClientRect().top;
+            const prevSectionHeight =
+              index > 0
+                ? sectionsRef.current![index - 1]?.getBoundingClientRect()
+                    .height
+                : 0;
+            const sectionHeight = section.getBoundingClientRect().height;
+            return (
+              sectionY <= prevSectionHeight * 0.5 &&
+              sectionY > -(sectionHeight * 0.5)
+            );
+          }),
         };
       });
     };
 
-    container.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener("scroll", handleScrollNav, { passive: true });
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("scroll", handleScrollNav);
     };
   }, []);
 
@@ -112,7 +129,12 @@ const HomePage = () => {
         className="hide-scrollbar"
         style={{ position: "relative" }}
       >
-        {!isMobile && <NavBar affixed={state.isAffixed} />}
+        {
+          <NavBar
+            selected={state.selectedSection}
+            affixed={state.isNavbarAffixed}
+          />
+        }
         <div
           ref={(el) => (sectionsRef.current[0] = el!)}
           id="hm-section-0"

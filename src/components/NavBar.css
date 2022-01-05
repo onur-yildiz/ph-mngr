@@ -53,3 +53,25 @@
     max-width: 100%;
   }
 }
+
+/* @media for mobile device */
+@media only screen and (hover: none) and (pointer: coarse) {
+  .header-section .ant-menu-item:not(.ant-menu-item-selected) {
+    color: initial !important;
+    transition: none;
+  }
+
+  .header-section .ant-menu-item:not(.ant-menu-item-selected)::after {
+    transition: none;
+    display: none !important;
+  }
+
+  .header-section .ant-menu-item:hover:not(.ant-menu-item-selected) {
+    color: initial !important;
+  }
+
+  .header-section .ant-menu-item:hover:not(.ant-menu-item-selected)::after {
+    display: none !important;
+  }
+
+}

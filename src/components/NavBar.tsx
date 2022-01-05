@@ -9,26 +9,29 @@ import { Menu, Popover } from "antd";
 import { FC, useEffect, useState } from "react";
 import "./NavBar.css";
 
-export const NavBar: FC<{ affixed?: boolean }> = (props) => {
-  const [selected, setSelected] = useState(["0"]);
+export const NavBar: FC<{
+  selected: number;
+  affixed?: boolean;
+}> = (props) => {
+  const [selected, setSelected] = useState([""]);
   const [showTitle, setShowTitle] = useState(false);
 
   const handleClick = (e: any) => {
     let element: Element | null = null;
     switch (e.key) {
-      case "home":
+      case "0":
         element = document.querySelector("#hm-section-0")!;
         break;
-      case "search":
+      case "1":
         element = document.querySelector("#hm-section-1")!;
         break;
-      case "products":
+      case "2":
         element = document.querySelector("#hm-section-2")!;
         break;
-      case "bio":
+      case "3":
         element = document.querySelector("#hm-section-3")!;
         break;
-      case "contact":
+      case "4":
         element = document.querySelector("#hm-section-4")!;
         break;
       default:
@@ -41,7 +44,6 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
-        console.log("only icons");
         setShowTitle(false);
       } else {
         setShowTitle(true);
@@ -55,6 +57,10 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    setSelected([props.selected.toString()]);
+  }, [props.selected]);
+
   return (
     <>
       <div className="header-section unselectable">
@@ -64,7 +70,7 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
           selectedKeys={selected}
           mode="horizontal"
         >
-          <Menu.Item className="hs-menu-item" key="home">
+          <Menu.Item className="hs-menu-item" key="0">
             <Popover
               content="Home"
               trigger={"hover"}
@@ -75,7 +81,7 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
             </Popover>
             {showTitle && " Home"}
           </Menu.Item>
-          <Menu.Item className="hs-menu-item" key="search">
+          <Menu.Item className="hs-menu-item" key="1">
             <Popover
               content="Search Orders"
               trigger={"hover"}
@@ -86,7 +92,7 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
             </Popover>
             {showTitle && " Search Orders"}
           </Menu.Item>
-          <Menu.Item className="hs-menu-item" key="products">
+          <Menu.Item className="hs-menu-item" key="2">
             <Popover
               content="Products"
               trigger={"hover"}
@@ -97,7 +103,7 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
             </Popover>
             {showTitle && " Products"}
           </Menu.Item>
-          <Menu.Item className="hs-menu-item" key="bio">
+          <Menu.Item className="hs-menu-item" key="3">
             <Popover
               content="About Us"
               trigger={"hover"}
@@ -108,7 +114,7 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
             </Popover>
             {showTitle && " About Us"}
           </Menu.Item>
-          <Menu.Item className="hs-menu-item" key="contact">
+          <Menu.Item className="hs-menu-item" key="4">
             <Popover
               content="Contact Info"
               trigger={"hover"}

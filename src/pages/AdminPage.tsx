@@ -6,6 +6,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet } from "react-router-dom";
+import SubMenu from "antd/lib/menu/SubMenu";
 
 const { Content, Sider } = Layout;
 
@@ -42,10 +43,22 @@ const AdminPage = () => {
               <span>Archive</span>
               <Link to={"archive"} />
             </Menu.Item>
-            <Menu.Item key="3" icon={<SettingOutlined />} disabled>
-              <span>Settings</span>
-              {/* <Link to={"settings"} /> */}
-            </Menu.Item>
+            <SubMenu
+              key={"sub1"}
+              icon={<SettingOutlined />}
+              title="Site Settings"
+            >
+              <Menu.Item key="3" icon={<SettingOutlined />}>
+                <span>Products</span>
+                <Link to={"products"} />
+              </Menu.Item>
+              <Menu.Item key="4" icon={<SettingOutlined />}>
+                <span>Biographies</span>
+              </Menu.Item>
+              <Menu.Item key="5" icon={<SettingOutlined />}>
+                <span>Contact Info</span>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout

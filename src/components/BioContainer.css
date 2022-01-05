@@ -22,6 +22,11 @@
   max-width: 600px;
   display: flex;
   flex-direction: column;
+  transition-duration: .3s;
+}
+
+.bio-container .ant-card:hover {
+  box-shadow: 0 4px 1em rgba(0, 0, 0, .25);
 }
 
 .bio-container .ant-card-body {

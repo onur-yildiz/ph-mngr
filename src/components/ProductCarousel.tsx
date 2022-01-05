@@ -286,7 +286,7 @@ export const ProductCarousel = () => {
         else
           return {
             rowLimit: 3,
-            columnLimit: 2,
+            columnLimit: 1,
             gutter: 16,
           };
       });

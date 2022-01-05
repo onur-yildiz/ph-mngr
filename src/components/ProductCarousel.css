@@ -18,6 +18,11 @@
   color: white;
   bottom: 1em;
   z-index: 22;
+  background-color: rgba(0, 0, 0, .25);
+}
+
+.carousel-button:hover {
+  background-color: rgba(0, 0, 0, .25);
 }
 
 .carousel-button.left {
@@ -55,7 +60,7 @@
 
 .carousel-item {
   display: flex !important;
-  padding: 0 0 5vh 0 !important;
+  padding: 0 1em 5vh 1em !important;
 }
 
 .product-carousel .ant-col {
@@ -67,8 +72,8 @@
   border-radius: 4px;
   overflow: hidden;
   padding: 0 !important;
-  max-height: 45vh;
-  width: calc(100% - 32px);
+  height: 45vh;
+  width: 100%;
   max-width: 45vh;
   display: flex;
   flex-direction: column;
@@ -77,6 +82,7 @@
 }
 
 .product-carousel .ant-card-cover {
+  border: 2px solid white;
   margin: 0;
 }
 

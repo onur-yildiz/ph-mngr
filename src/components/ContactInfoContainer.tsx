@@ -1,5 +1,4 @@
 import { Descriptions } from "antd";
-import Title from "antd/lib/typography/Title";
 import { CSSProperties } from "react";
 import "./ContactInfoContainer.css";
 
@@ -10,9 +9,6 @@ export const ContactInfoContainer = () => {
   return (
     <div className="contact-info-container">
       <div>
-        <Title className="contact-info-title" level={3}>
-          FotoMoto
-        </Title>
         <Descriptions
           labelStyle={labelStyle}
           contentStyle={contentStyle}

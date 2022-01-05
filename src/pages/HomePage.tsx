@@ -10,6 +10,7 @@ import { isMobile } from "react-device-detect";
 import Title from "antd/lib/typography/Title";
 
 const HomePage = () => {
+  const sectionColors = ["#023047", "#3d5a80", "#023047", "#3d5a80", "#023047"];
   const sectionHeightProportion = 1.3;
   const scrollSectionHeight = window.innerHeight * sectionHeightProportion;
   const viewHeight = window.innerHeight;
@@ -59,25 +60,6 @@ const HomePage = () => {
     }
     return "0";
   };
-
-  // const heightAnimator = (element: Element | null) => {
-  //   if (!element) {
-  //     return "";
-  //   }
-
-  //   const elementY = element.getBoundingClientRect().top;
-
-  //   if (elementY <= viewHeight && elementY >= 0) {
-  //     return (1 - elementY / viewHeight) * 100 + "vh";
-  //   }
-  //   if (
-  //     elementY <= viewHeight - scrollSectionHeight &&
-  //     elementY >= -scrollSectionHeight
-  //   ) {
-  //     return scrollSectionHeight + elementY;
-  //   }
-  //   return "";
-  // };
 
   useEffect(() => {
     const container = containerRef.current!;
@@ -138,27 +120,13 @@ const HomePage = () => {
         >
           <div
             className="sticky-view"
-            style={{ backgroundColor: "#0396A6" }}
-            // style={
-            //   {
-            //     transform: `translateY(${
-            //       state.scrollPosition / 2
-            //     }px) scale(${
-            //       (viewHeight - state.scrollPosition / 2) / viewHeight
-            //     })`,
-            //   }
-            // }
+            style={{ backgroundColor: sectionColors[0] }}
           >
-            <div
-              className="full-view photo-bg"
-              style={{
-                transform: `translateY(${topPosAnimator(
-                  sectionsRef.current[0]
-                )})`,
-              }}
-            >
-              <div className="section-box title">
-                <Title level={1}>FotoMoto</Title>
+            <div className="full-view photo-bg">
+              <div className="section-box">
+                <Title className="title" level={1}>
+                  FotoMoto
+                </Title>
               </div>
             </div>
           </div>
@@ -172,7 +140,7 @@ const HomePage = () => {
         >
           <div
             className="sticky-view section-wrapper"
-            style={{ backgroundColor: "#77ba99" }}
+            style={{ backgroundColor: sectionColors[1] }}
           >
             <div
               className="full-view search-bg"
@@ -204,19 +172,10 @@ const HomePage = () => {
           <div
             className="sticky-view section-wrapper"
             style={{
-              backgroundColor: "#d33f49",
+              backgroundColor: sectionColors[2],
             }}
           >
-            <div
-              className="full-view carousel-bg"
-              style={
-                {
-                  // transform: `translateY(${topPosAnimator(
-                  //   sectionsRef.current[2]
-                  // )})`,
-                }
-              }
-            >
+            <div className="full-view carousel-bg">
               <ProductCarousel />
             </div>
           </div>
@@ -230,7 +189,7 @@ const HomePage = () => {
         >
           <div
             className="sticky-view section-wrapper"
-            style={{ backgroundColor: "#F25835" }}
+            style={{ backgroundColor: sectionColors[3] }}
           >
             <div
               className="full-view bio-bg"
@@ -255,7 +214,7 @@ const HomePage = () => {
         >
           <div
             className="sticky-view section-wrapper"
-            style={{ backgroundColor: "#96ABC3" }}
+            style={{ backgroundColor: sectionColors[4] }}
           >
             <div className="full-view maps-bg">
               <div className="section-box flex-center">

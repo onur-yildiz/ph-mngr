@@ -24,7 +24,6 @@ export const SearchContainer = () => {
         {Number(mockSearchData) ? (
           <Descriptions
             className="search-result"
-            title="Order Info"
             extra={
               <Button type="primary" onClick={() => setMockSearchData("")}>
                 Back

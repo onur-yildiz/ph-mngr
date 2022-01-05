@@ -49,7 +49,6 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
     };
 
     handleResize();
-    // window.addEventListener("mouse", handleResize);
     window.addEventListener("resize", handleResize, { passive: true });
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -58,12 +57,12 @@ export const NavBar: FC<{ affixed?: boolean }> = (props) => {
 
   return (
     <>
-      <div className="header-section">
+      <div className="header-section unselectable">
         <Menu
           className={props.affixed ? "hs-menu affixed" : "hs-menu affix-static"}
           onClick={handleClick}
           selectedKeys={selected}
-          mode={showTitle ? "horizontal" : "vertical"}
+          mode="horizontal"
         >
           <Menu.Item className="hs-menu-item" key="home">
             <Popover

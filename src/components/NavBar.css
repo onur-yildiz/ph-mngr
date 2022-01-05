@@ -17,11 +17,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  transition: border-radius ease 0.5s;
-}
-
-.hs-menu-item:focus {
-  border: none;
+  transition: border-radius ease 0.3s;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
 .affixed {
@@ -41,6 +38,12 @@
   .hs-menu {
     min-width: 30%;
     max-width: 100%;
+  }
+
+  .hs-menu-item {
+    text-align: center;
+    padding: 0 !important;
+    min-width: 4em;
   }
 }
 

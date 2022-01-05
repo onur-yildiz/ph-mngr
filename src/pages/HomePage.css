@@ -45,6 +45,8 @@
 .maps-bg::before {
   content: '';
   position: absolute;
+  top: 50%;
+  left: 50%;
   height: 100%;
   width: 100%;
   z-index: -11;
@@ -56,10 +58,11 @@
 .bio-bg::before {
   content: '';
   position: absolute;
+  top: 50%;
+  left: 50%;
   height: 100%;
   width: 100%;
   z-index: -11;
-  background-color: "#0396A6";
   background-image: url("../assets/undraw_personal_info_-0-okl.svg");
   background-size: cover;
   opacity: .5;
@@ -68,6 +71,8 @@
 .photo-bg::before {
   content: '';
   position: absolute;
+  top: 50%;
+  /* left: 50%; */
   height: 100%;
   width: 100%;
   z-index: -11;
@@ -79,6 +84,8 @@
 .search-bg::before {
   content: '';
   position: absolute;
+  top: 50%;
+  left: 50%;
   height: 100%;
   width: 100%;
   z-index: -11;
@@ -91,20 +98,22 @@
 .carousel-bg::before {
   content: '';
   position: absolute;
+  top: 50%;
+  left: 50%;
   height: 102%;
   width: 100%;
   z-index: -11;
-  background-image: url("../assets/undraw_file_searching_re_3evy.svg");
+  background-image: url("../assets/undraw_checking_boxes_re_9h8m.svg");
   background-size: cover;
   background-repeat: no-repeat;
   opacity: .5;
 }
 
 .title {
-  width: 50%;
+  width: 100%;
   text-align: center;
   position: absolute;
   top: 30%;
-  left: 50%;
-  transform: translate(-50%, 0);
+  color: white !important;
+  font-size: 4em !important;
 }

@@ -1,9 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import orderReducer from "./ordersSlice";
+import ordersReducer from "./ordersSlice";
+import contactInfoReducer from "./contactInfoSlice";
+import productsReducer from "./productsSlice";
+import biographiesReducer from "./biographiesSlice";
 
 const store = configureStore({
-  reducer: { order: orderReducer },
+  reducer: {
+    orders: ordersReducer,
+    contactInfo: contactInfoReducer,
+    products: productsReducer,
+    biographies: biographiesReducer,
+  },
 });
 
 export default store;

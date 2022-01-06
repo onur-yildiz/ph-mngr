@@ -1,0 +1,11 @@
+.image-preview {
+  max-width: min(100%, 1000px);
+  object-fit: cover;
+  padding: 4px;
+  background-color: #fafafa;
+}
+
+.upload-button-image {
+  height: 10em;
+  min-width: 10em;
+}

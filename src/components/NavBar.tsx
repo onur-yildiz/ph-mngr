@@ -43,7 +43,7 @@ export const NavBar: FC<{
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 1024) {
+      if (window.innerWidth <= 1024) {
         setShowTitle(false);
       } else {
         setShowTitle(true);

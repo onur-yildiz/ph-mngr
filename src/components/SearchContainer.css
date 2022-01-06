@@ -74,6 +74,13 @@
     animation: Input-placement-small .25s forwards ease;
   }
 
+  @media screen and (max-height: 500px) {
+    .search-result {
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+    }
+  }
+
   @keyframes Input-placement-small {
     0% {
       opacity: .5;

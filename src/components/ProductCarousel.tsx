@@ -277,7 +277,7 @@ export const ProductCarousel = () => {
   useEffect(() => {
     const handleResize = () => {
       setCarouselSettings(() => {
-        if (window.innerWidth < 768)
+        if (window.innerWidth <= 768)
           return {
             rowLimit: 1,
             columnLimit: 1,

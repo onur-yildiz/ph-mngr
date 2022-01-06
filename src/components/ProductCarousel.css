@@ -1,6 +1,7 @@
 .product-carousel .slick-dots {
   bottom: 0 !important;
   height: 5vh;
+  height: calc(var(--vh, 1vh) * 5);
   width: 80%;
   margin: 0;
   display: flex;
@@ -66,15 +67,18 @@
 .product-carousel .ant-col {
   display: flex;
   justify-content: center;
+  align-items: center;
+  max-height: 60vh;
+  max-height: calc(var(--vh, 1vh) * 60);
 }
 
 .product-carousel .ant-card {
   border-radius: 4px;
   overflow: hidden;
   padding: 0 !important;
-  height: 45vh;
+  height: 100%;
   width: 100%;
-  max-width: 45vh;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -88,6 +92,7 @@
 
 .product-carousel img {
   height: 25vh;
+  height: calc(var(--vh, 1vh) * 25);
   width: 100%;
   object-fit: cover;
 }
@@ -113,11 +118,13 @@
 @media screen and (max-width: 768px) {
   .product-carousel .ant-card {
     width: 80vw;
-    max-height: 90vh;
+    max-height: 90;
+    max-height: calc(var(--vh, 1vh) * 90);
   }
 
   img {
     max-height: 30vh;
+    max-height: calc(var(--vh, 1vh) * 30);
     max-width: 80vw;
     object-fit: cover;
   }
@@ -128,5 +135,16 @@
 
   .product-carousel .slick-dots {
     width: 100%;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  .product-carousel .ant-col {
+    max-height: 90vh;
+    max-height: calc(var(--vh, 1vh) * 90);
+  }
+
+  .product-carousel .ant-card {
+    max-width: 400px;
   }
 }

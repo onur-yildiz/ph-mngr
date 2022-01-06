@@ -12,7 +12,9 @@ export const BioContainer = () => {
   return (
     <div className="bio-container flex-center">
       <div className="bio-container-col">
-        <h1 className="bio-container-title">About Us</h1>
+        {window.innerHeight >= 700 && (
+          <h1 className="bio-container-title">About Us</h1>
+        )}
         <div>
           <Card
             actions={[

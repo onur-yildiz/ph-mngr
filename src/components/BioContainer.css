@@ -16,10 +16,11 @@
 
 .bio-container .ant-card {
   border-radius: 4px;
-  margin: 1em;
   max-height: 60vh;
+  max-height: calc(var(--vh, 1vh) * 60);
   width: 40%;
-  max-width: 600px;
+  max-width: 100%;
+  margin: .5em;
   display: flex;
   flex-direction: column;
   transition-duration: .3s;
@@ -32,7 +33,7 @@
 .bio-container .ant-card-body {
   height: 100%;
   overflow-y: scroll;
-  padding-top: 0;
+  /* padding-top: 0; */
 }
 
 .bio-container .ant-card-body::-webkit-scrollbar {
@@ -49,13 +50,13 @@
 
 
 .card-header {
-  min-height: 5em;
   position: sticky;
   top: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
   background-color: white;
+  margin-bottom: 1em;
 }
 
 .card-header>* {
@@ -70,10 +71,19 @@
 @media screen and (max-width: 768px) {
   .bio-container .ant-card {
     max-height: 40vh;
+    max-height: calc(var(--vh, 1vh) * 40);
     width: 80%;
   }
 
   .bio-container-title {
     top: -5%;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  .bio-container .ant-card {
+    max-height: 90vh;
+    max-height: calc(var(--vh, 1vh) * 90);
+    width: 45%;
   }
 }

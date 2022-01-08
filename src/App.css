@@ -32,6 +32,23 @@ button {
   user-select: none;
 }
 
+.table,
+.table>* {
+  transition: all .3s ease;
+}
+
+.table .ant-table-pagination {
+  margin: 0;
+  height: 5vh;
+  height: calc(var(--vh, 1vh) * 5);
+  min-height: 1em;
+  align-items: center;
+}
+
+.table button {
+  border-radius: 2px;
+}
+
 .table-action-button {
   border-bottom: 1px solid #e8e8e8 !important;
 }
@@ -42,4 +59,28 @@ button {
 
 .table-action-button:not(:last-child) {
   margin-right: 1em;
+}
+
+.table-button-bar {
+  background-color: #fafafa;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: .5em;
+  margin-block: .5em;
+}
+
+@media screen and (min-height: 900px) and (min-width: 768px) {
+  .table {
+    padding-inline: 2em;
+  }
+
+  .table>*:only-child {
+    margin-top: 2em;
+  }
+
+  .table-button-bar {
+    border-radius: 2px;
+    padding: 1em;
+  }
 }

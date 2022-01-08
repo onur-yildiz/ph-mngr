@@ -1,7 +1,7 @@
 import { Button, Table, Tooltip, Modal } from "antd";
 import { CheckOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { format, parseISO } from "date-fns";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { loadOrders, toggleDone } from "../store/ordersSlice";
 import { ColumnsType } from "antd/lib/table";
@@ -12,18 +12,9 @@ const { confirm } = Modal;
 const DB_URI = process.env.REACT_APP_DB_URI as string;
 
 const OrderList: FC<{ isArchive?: boolean }> = (props) => {
+  const [scrollHeight, setScrollHeight] = useState(window.innerHeight * 0.8);
   const orders = useAppSelector((state) => state.orders.orders);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const res = await fetch(`${DB_URI}/orders`);
-      const data = await res.json();
-      dispatch(loadOrders(data));
-    };
-
-    fetchOrders();
-  }, [dispatch]);
 
   const completeOrder = (order: Order) => {
     dispatch(toggleDone(order));
@@ -89,30 +80,51 @@ const OrderList: FC<{ isArchive?: boolean }> = (props) => {
     },
   ];
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const res = await fetch(`${DB_URI}/orders`);
+      const data = await res.json();
+      dispatch(loadOrders(data));
+    };
+
+    fetchOrders();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScrollHeight(window.innerHeight * 0.8);
+    };
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <Table
-      className="orders-table"
-      size="small"
-      columns={columns}
-      scroll={{
-        y: window.innerHeight * 0.85,
-        x: 1200,
-      }}
-      expandable={{
-        expandRowByClick: true,
-        expandedRowRender: (record: Order) => <span>{record.desc}</span>,
-        rowExpandable: (record: Order) => record.desc?.trim().length > 0,
-      }}
-      dataSource={orders.filter((order) => order.done === props.isArchive)}
-      rowKey="id"
-      pagination={{
-        pageSize: 20,
-        hideOnSinglePage: true,
-        responsive: true,
-        showSizeChanger: false,
-        position: ["bottomCenter"],
-      }}
-    />
+    <div className="table">
+      <Table
+        size="small"
+        columns={columns}
+        scroll={{
+          y: scrollHeight,
+          x: "max-content",
+        }}
+        expandable={{
+          expandRowByClick: true,
+          expandedRowRender: (record: Order) => <span>{record.desc}</span>,
+          rowExpandable: (record: Order) => record.desc?.trim().length > 0,
+        }}
+        dataSource={orders.filter((order) => order.done === props.isArchive)}
+        rowKey="id"
+        pagination={{
+          pageSize: 20,
+          hideOnSinglePage: true,
+          responsive: true,
+          showSizeChanger: false,
+          position: ["bottomCenter"],
+        }}
+      />
+    </div>
   );
 };
 

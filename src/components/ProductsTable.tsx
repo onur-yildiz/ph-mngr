@@ -100,8 +100,8 @@ const ProductsTable = () => {
   }, []);
 
   return (
-    <div className="products-table">
-      <div className="products-button-bar">
+    <div className="table">
+      <div className="table-button-bar">
         <Button
           className="add-product-button"
           type="primary"

@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import OrderList from "./components/OrdersTable";
-import Products from "./components/ProductsTable";
+import ProductForm from "./components/ProductForm";
+import ProductsTable from "./components/ProductsTable";
 import AdminPage from "./pages/AdminPage";
 import HomePage from "./pages/HomePage";
 
@@ -36,7 +37,13 @@ export default function App() {
         />
         <Route path="orders" element={<OrderList />} />
         <Route path="archive" element={<OrderList isArchive={true} />} />
-        <Route path="products" element={<Products />} />
+        <Route path="products" element={<ProductsTable />} />
+        <Route path="products/create" element={<ProductForm />} />
+        <Route path="products/edit/:productId" element={<ProductForm />} />
+        <Route path="bios/" element={<></>} />
+        <Route path="bios/edit/:bioId" element={<></>} />
+        <Route path="contactInfo/" element={<></>} />
+        <Route path="contactInfo/edit" element={<></>} />
       </Route>
     </Routes>
   );

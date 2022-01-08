@@ -17,7 +17,7 @@ const OrderList: FC<{ isArchive?: boolean }> = (props) => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const res = await fetch(DB_URI);
+      const res = await fetch(`${DB_URI}/orders`);
       const data = await res.json();
       dispatch(loadOrders(data));
     };
@@ -47,7 +47,7 @@ const OrderList: FC<{ isArchive?: boolean }> = (props) => {
   };
 
   const columns: ColumnsType<Order> = [
-    { title: "ID", dataIndex: "uid", key: "uid" },
+    { title: "ID", dataIndex: "id", key: "id" },
     { title: "Name", dataIndex: "customerName", key: "customerName" },
     { title: "Phone Number", dataIndex: "phoneNumber", key: "phoneNumber" },
     { title: "Email", dataIndex: "email", key: "email" },
@@ -104,7 +104,7 @@ const OrderList: FC<{ isArchive?: boolean }> = (props) => {
         rowExpandable: (record: Order) => record.desc?.trim().length > 0,
       }}
       dataSource={orders.filter((order) => order.done === props.isArchive)}
-      rowKey="uid"
+      rowKey="id"
       pagination={{
         pageSize: 20,
         hideOnSinglePage: true,

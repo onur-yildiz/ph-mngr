@@ -32,6 +32,14 @@ button {
   user-select: none;
 }
 
+.table-action-button {
+  border-bottom: 1px solid #e8e8e8 !important;
+}
+
+.table-action-button:hover {
+  border-bottom: 1px solid #c5c5c5 !important;
+}
+
 .table-action-button:not(:last-child) {
   margin-right: 1em;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
 import {
   FileTextOutlined,
@@ -11,10 +11,20 @@ import SubMenu from "antd/lib/menu/SubMenu";
 const { Content, Sider } = Layout;
 
 const AdminPage = () => {
-  const [isCollapsed, setIsisCollapsed] = useState(false);
+  const [isCollapsed, setIsisCollapsed] = useState(window.innerWidth <= 768);
   const toggleCollapse = () => {
     setIsisCollapsed(!isCollapsed);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsisCollapsed(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>

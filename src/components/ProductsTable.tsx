@@ -2,70 +2,42 @@ import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
-import { Table, Image, Tooltip, Button, Modal } from "antd";
+import { Table, Image, Tooltip, Button, Modal, ModalFuncProps } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { loadProducts } from "../store/productsSlice";
+import { deleteProduct, loadProducts } from "../store/productsSlice";
 import "./ProductsTable.css";
 
 const { confirm } = Modal;
+const DB_URI = process.env.REACT_APP_DB_URI as string;
+const FALLBACK_IMAGE = process.env.REACT_APP_FALLBACK_IMAGE as string;
 
 const ProductsTable = () => {
   const products = useAppSelector((state) => state.products.products);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [scrollHeight, setScrollHeight] = useState(window.innerHeight * 0.8);
 
-  const showDeleteConfirm = () => {
+  const showConfirm = (props: ModalFuncProps) => {
     confirm({
-      title: "Are you sure delete this task?",
       icon: <ExclamationCircleOutlined />,
-      content: "Some descriptions",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk() {
-        console.log("OK");
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
+      ...props,
     });
   };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      // const res = await fetch("/api/products");
-      // const data = await res.json();
-      const data: Product[] = [
-        {
-          imageSrc: "https://via.placeholder.com/150",
-          uid: "1",
-          title: "Product 1",
-          desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore quisquam voluptatem debitis eligendi distinctio minima laborum ullam quasi corrupti quia, consequatur, rem aperiam dicta vel molestiae ipsam obcaecati veniam libero.",
-        },
-        {
-          imageSrc: "https://via.placeholder.com/150",
-          uid: "2",
-          title: "Product 2",
-          desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore quisquam voluptatem debitis eligendi distinctio minima laborum ullam quasi corrupti quia, consequatur, rem aperiam dicta vel molestiae ipsam obcaecati veniam libero.",
-        },
-        {
-          imageSrc: "https://via.placeholder.com/150",
-          uid: "3",
-          title: "Product 3",
-          desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore quisquam voluptatem debitis eligendi distinctio minima laborum ullam quasi corrupti quia, consequatur, rem aperiam dicta vel molestiae ipsam obcaecati veniam libero.",
-        },
-      ];
-
-      dispatch(loadProducts(data));
-    };
-    console.log("ayayay");
-    fetchProducts();
-  }, [dispatch]);
+  const onDeleteOk = async (product: Product) => {
+    const res = await fetch(`${DB_URI}/products/${product.id}`, {
+      method: "DELETE",
+    });
+    if (res.ok) dispatch(deleteProduct(product.id));
+  };
 
   const columns: ColumnsType<Product> = [
-    { title: "ID", dataIndex: "uid", key: "uid" },
+    { title: "ID", dataIndex: "id", key: "id" },
     { title: "Name", dataIndex: "title", key: "title" },
     {
       title: "Action",
@@ -78,17 +50,29 @@ const ProductsTable = () => {
             <Button
               className="table-action-button"
               shape="circle"
+              type="text"
               icon={<EditOutlined />}
-              onClick={() => {}}
+              onClick={() => navigate(`edit/${product.id}`)}
             />
           </Tooltip>
           <Tooltip title="Delete">
             <Button
               className="table-action-button"
               shape="circle"
+              type="text"
               danger
               icon={<DeleteOutlined />}
-              onClick={showDeleteConfirm}
+              onClick={() =>
+                showConfirm({
+                  title: `Delete Product`,
+                  content: `Are you sure you want to delete "${product.title}"?`,
+                  okText: "Delete",
+                  cancelText: "Cancel",
+                  okType: "danger",
+                  onOk: onDeleteOk.bind(null, product),
+                  // onCancel: () => console.log("Cancel"),
+                })
+              }
             />
           </Tooltip>
         </div>
@@ -96,25 +80,53 @@ const ProductsTable = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await fetch(`${DB_URI}/products`);
+      const data = await res.json();
+      dispatch(loadProducts(data));
+    };
+    fetchProducts();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScrollHeight(window.innerHeight * 0.8);
+    };
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <>
+    <div className="products-table">
+      <div className="products-button-bar">
+        <Button
+          className="add-product-button"
+          type="primary"
+          icon={<PlusOutlined />}
+        >
+          New
+        </Button>
+      </div>
       <Table
-        className="products-table"
         size="small"
         columns={columns}
         scroll={{
-          y: window.innerHeight * 0.85,
-          x: 450,
+          y: scrollHeight,
+          x: "max-content",
         }}
         expandable={{
           expandRowByClick: true,
           expandedRowRender: (record: Product) =>
-            expandable(record.desc, record.imageSrc),
+            expandable(record.desc, record.imageUrl),
           rowExpandable: (record: Product) =>
-            record.desc.trim().length > 0 || record.imageSrc.trim().length > 0,
+            record.desc?.trim().length > 0 ||
+            record.imageUrl?.trim().length > 0,
         }}
         dataSource={products}
-        rowKey="uid"
+        rowKey="id"
         pagination={{
           pageSize: 20,
           hideOnSinglePage: true,
@@ -123,15 +135,25 @@ const ProductsTable = () => {
           position: ["bottomCenter"],
         }}
       />
-    </>
+    </div>
   );
 };
 
-const expandable = (desc: string, imageSrc: string) => {
+const expandable = (desc: string, imageUrl: string) => {
   return (
     <div className="products-expandable">
-      <div>{desc}</div>
-      <Image width={300} src={imageSrc} />
+      <p className="products-expandable-text">
+        {desc.trim().length > 0 ? desc : "No description"}
+      </p>
+      <div className="products-expandable-image-container">
+        <Image
+          className="products-expandable-image"
+          src={imageUrl}
+          fallback={FALLBACK_IMAGE}
+          loading="lazy"
+          placeholder
+        />
+      </div>
     </div>
   );
 };

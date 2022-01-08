@@ -1,5 +1,4 @@
-type Biography = {
-  id: string;
+type Biography = UniqueObj & {
   avatar: string;
   name: string;
   desc: string;

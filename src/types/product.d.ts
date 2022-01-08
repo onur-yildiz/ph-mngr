@@ -1,5 +1,4 @@
-type Product = {
-  id: string;
+type Product = UniqueObj & {
   title: string;
   desc: string;
   imageUrl: string;

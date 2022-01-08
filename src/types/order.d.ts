@@ -1,6 +1,4 @@
-type Order = {
-  key: number;
-  id: number;
+type Order = UniqueObj & {
   customerName: string;
   phoneNumber: number;
   email: string;

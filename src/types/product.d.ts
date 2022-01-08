@@ -1,6 +1,6 @@
 declare type Product = {
-  uid: string;
-  imageSrc: string;
+  id: string;
   title: string;
   desc: string;
+  imageUrl: string;
 };

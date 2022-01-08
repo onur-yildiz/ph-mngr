@@ -26,7 +26,7 @@ const ordersSlice = createSlice({
     toggleDone(state, action) {
       console.log("toggleDone");
       const order = state.orders.find(
-        (order) => order.uid === action.payload.uid
+        (order) => order.id === action.payload.id
       );
       if (order) order.done = !order.done;
     },

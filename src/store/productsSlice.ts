@@ -24,14 +24,14 @@ const productsSlice = createSlice({
     updateProduct(state, action) {
       console.log("updateProduct");
       const index = state.products.findIndex(
-        (product) => product.uid === action.payload.uid
+        (product) => product.id === action.payload.id
       );
-      state.products[index] = { ...state.products[index], ...action.payload };
+      state.products[index] = action.payload;
     },
     deleteProduct(state, action) {
       console.log("deleteProduct");
       state.products = state.products.filter(
-        (product) => product.uid !== action.payload.uid
+        (product) => product.id !== action.payload
       );
     },
   },

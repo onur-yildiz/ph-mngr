@@ -1,6 +1,6 @@
 declare type Order = {
   key: number;
-  uid: number;
+  id: number;
   customerName: string;
   phoneNumber: number;
   email: string;

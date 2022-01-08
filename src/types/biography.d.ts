@@ -1,5 +1,5 @@
 declare type Biography = {
-  uid: string;
+  id: string;
   avatar: string;
   name: string;
   desc: string;

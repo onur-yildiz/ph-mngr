@@ -19,14 +19,12 @@ const biographiesSlice = createSlice({
     },
     updateBio(state, action) {
       console.log("updateBio");
-      const index = state.bios.findIndex(
-        (bio) => bio.uid === action.payload.uid
-      );
+      const index = state.bios.findIndex((bio) => bio.id === action.payload.id);
       state.bios[index] = { ...state.bios[index], ...action.payload };
     },
     deleteBio(state, action) {
       console.log("deleteBio");
-      state.bios = state.bios.filter((bio) => bio.uid !== action.payload.uid);
+      state.bios = state.bios.filter((bio) => bio.id !== action.payload.id);
     },
   },
 });

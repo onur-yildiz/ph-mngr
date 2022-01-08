@@ -1,4 +1,4 @@
-declare type Biography = {
+type Biography = {
   id: string;
   avatar: string;
   name: string;

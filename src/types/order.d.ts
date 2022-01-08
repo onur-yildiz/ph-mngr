@@ -1,4 +1,4 @@
-declare type Order = {
+type Order = {
   key: number;
   id: number;
   customerName: string;

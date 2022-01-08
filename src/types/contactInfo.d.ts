@@ -1,4 +1,4 @@
-declare type ContactInfo = {
+type ContactInfo = {
   address: string;
   phone: string;
   email: string;

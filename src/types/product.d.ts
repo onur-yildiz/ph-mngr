@@ -1,4 +1,4 @@
-declare type Product = {
+type Product = {
   id: string;
   title: string;
   desc: string;

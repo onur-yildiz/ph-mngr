@@ -1,5 +1,5 @@
 type Biography = UniqueObj & {
-  avatar: string;
+  avatarUrl: string;
   name: string;
   desc: string;
   phone: string;

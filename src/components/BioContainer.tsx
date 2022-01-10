@@ -3,101 +3,86 @@ import {
   MailOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Popover } from "antd";
+import { Avatar, Card, message, Popover } from "antd";
 import Title from "antd/lib/typography/Title";
-import Text from "antd/lib/typography/Text";
+import Paragraph from "antd/lib/typography/Paragraph";
 import "./BioContainer.css";
+import { useAppSelector } from "../hooks";
 
 export const BioContainer = () => {
+  const bios = useAppSelector((state) => state.biographies.bios);
+
   return (
     <div className="bio-container flex-center">
       <div className="bio-container-col">
-        {window.innerHeight >= 700 && (
+        {/* {window.innerHeight >= 700 && (
           <h1 className="bio-container-title">About Us</h1>
-        )}
-        <div>
-          <Card
-            actions={[
-              <Popover content="Call" mouseEnterDelay={0.5} placement="bottom">
-                <PhoneOutlined key="call" />
-              </Popover>,
-              <Popover
-                content="Send mail"
-                mouseEnterDelay={0.5}
-                placement="bottom"
-              >
-                <MailOutlined key="Mail" />
-              </Popover>,
-              <Popover
-                content="Instagram"
-                mouseEnterDelay={0.5}
-                arrowPointAtCenter={false}
-                placement="bottom"
-              >
-                <InstagramOutlined key="Mail" />
-              </Popover>,
-            ]}
-          >
-            <div className="card-header">
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
-              <Title level={4}>Card Title</Title>
-            </div>
-            <div className="card-description">
-              <Text type="secondary">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis
-                nam nihil provident culpa incidunt nobis rerum cum, fuga quos
-                adipisci earum eveniet repudiandae itaque molestias ut magnam
-                vel, atque sit?Lorem ipsum dolor, sit amet consectetur
-                adipisicing elit. Quis nam nihil provident culpa incidunt nobis
-                rerum cum, fuga quos adipisci earum eveniet repudiandae itaque
-                molestias ut magnam vel, atque sit?Lorem ipsumLorem ipsum dolor,
-                sit amet consectetur adipisicing elit. Quis nam nihil provident
-                culpa incidunt nobis rerum cum, fuga quos adipisci earum eveniet
-                repudiandae itaque molestias ut magnam vel, atque sit?Lorem
-                ipsum dolor, sit amet consectetur adipisicing elit. Quis nam
-                nihil provident culpa atque sit?
-              </Text>
-            </div>
-          </Card>
-          <Card
-            actions={[
-              <Popover content="Call" mouseEnterDelay={0.5} placement="bottom">
-                <PhoneOutlined key="call" />
-              </Popover>,
-              <Popover
-                content="Send mail"
-                mouseEnterDelay={0.5}
-                placement="bottom"
-              >
-                <MailOutlined key="Mail" />
-              </Popover>,
-              <Popover
-                content="Instagram"
-                mouseEnterDelay={0.5}
-                arrowPointAtCenter={false}
-                placement="bottom"
-              >
-                <InstagramOutlined key="Mail" />
-              </Popover>,
-            ]}
-          >
-            <div className="card-header">
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
-              <Title level={4}>Card Title</Title>
-            </div>
-            <div className="card-description">
-              <Text type="secondary">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis
-                nam nihil provident culpa incidunt nobis rerum cum, fuga quos
-                adipisci earum eveniet repudiandae itaque molestias ut magnam
-                vel, atque sit?Lorem ipsum dolor, sit amet consectetur
-                adipisicing elit. Quis nam nihil provident culpa incidunt nobis
-                rerum cum, fuga quos adipisci earum eveniet repudiandae itaque
-                molestias ut magnam vel, atque sit?Lorem ipsumLorem ipsum dolor,
-                sit amet consectetur atque sit?
-              </Text>
-            </div>
-          </Card>
+        )} */}
+        <div className="bio-card-container">
+          {bios.map((bio) => (
+            <Card
+              actions={[
+                bio?.phone && (
+                  <Popover
+                    content="Call"
+                    mouseEnterDelay={0.5}
+                    placement="bottom"
+                  >
+                    <PhoneOutlined
+                      key="call"
+                      onClick={() => {
+                        // copy to clipboard
+                        navigator.clipboard.writeText(bio?.phone);
+                        message.info({
+                          content: "Phone number copied to clipboard",
+                          className: "message",
+                        });
+                      }}
+                    />
+                  </Popover>
+                ),
+                <Popover
+                  content="Send mail"
+                  mouseEnterDelay={0.5}
+                  placement="bottom"
+                >
+                  <MailOutlined
+                    key="Mail"
+                    onClick={() => {
+                      window.open(`mailto:${bio?.email}`);
+                    }}
+                  />
+                </Popover>,
+                bio?.instagramLink && (
+                  <Popover
+                    content="Instagram"
+                    mouseEnterDelay={0.5}
+                    arrowPointAtCenter={false}
+                    placement="bottom"
+                  >
+                    <InstagramOutlined
+                      key="Mail"
+                      onClick={() => {
+                        window.open(bio?.instagramLink, "_blank");
+                      }}
+                    />
+                  </Popover>
+                ),
+              ]}
+            >
+              <div className="card-header">
+                <Avatar src={bio?.avatarUrl} />
+                <Title level={4}>{bio?.name}</Title>
+              </div>
+              <div className="card-description">
+                <Paragraph
+                  ellipsis={{ rows: 4, expandable: true, symbol: "more" }}
+                >
+                  {bio?.desc}
+                </Paragraph>
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
     </div>

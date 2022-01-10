@@ -37,6 +37,12 @@ button {
   transition: all .3s ease;
 }
 
+.table td:not(:first-child)::before {
+  content: '';
+  display: block;
+  width: 6em;
+}
+
 .table .ant-table-pagination {
   margin: 0;
   height: 5vh;
@@ -70,7 +76,14 @@ button {
   margin-block: .5em;
 }
 
-@media screen and (min-height: 900px) and (min-width: 768px) {
+.table-expandable {
+  max-width: 80vw;
+  max-height: 20vh;
+  max-height: calc(var(--vh, 1vh) * 20);
+  overflow-y: auto;
+}
+
+@media screen and (min-height: 900px) and (min-width: 1500px) {
   .table {
     padding-inline: 2em;
   }
@@ -82,5 +95,62 @@ button {
   .table-button-bar {
     border-radius: 2px;
     padding: 1em;
+  }
+}
+
+.picture-card-upload-button {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-image-preview {
+  max-width: min(100%, 1000px);
+  object-fit: cover;
+  padding: 4px;
+  background-color: #fafafa;
+}
+
+.form {
+  margin-top: 2em;
+}
+
+.form label {
+  font-weight: bold;
+  color: darkslategray
+}
+
+.form .ant-input:disabled {
+  background-color: transparent;
+  border-color: transparent;
+  border-bottom: 1px solid rgba(112, 128, 144, 0.2);
+  color: slategray;
+  font-weight: bold;
+  cursor: text;
+}
+
+.form button:not(:last-child) {
+  margin-right: 1em;
+}
+
+.form .form-title {
+  margin-left: 25%;
+  color: darkslategray;
+  font-weight: bolder;
+}
+
+.message {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 10vh;
+}
+
+@media screen and (max-height: 768px) {
+  .message {
+    height: initial;
   }
 }

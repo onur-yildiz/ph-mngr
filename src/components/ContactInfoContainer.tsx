@@ -1,8 +1,11 @@
 import { Descriptions } from "antd";
 import { CSSProperties } from "react";
+import { useAppSelector } from "../hooks";
 import "./ContactInfoContainer.css";
 
 export const ContactInfoContainer = () => {
+  const contactInfo = useAppSelector((state) => state.contactInfo.contactInfo);
+
   const labelStyle: CSSProperties = { fontWeight: "bold" };
   const contentStyle: CSSProperties = { display: "block", textAlign: "right" };
 
@@ -18,10 +21,14 @@ export const ContactInfoContainer = () => {
           column={1}
         >
           <Descriptions.Item label="Address">
-            No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+            {contactInfo?.address}
           </Descriptions.Item>
-          <Descriptions.Item label="Phone">(+90)555 888 4455</Descriptions.Item>
-          <Descriptions.Item label="Email">test@test.com</Descriptions.Item>
+          <Descriptions.Item label="Phone">
+            {contactInfo?.phone}
+          </Descriptions.Item>
+          <Descriptions.Item label="Email">
+            {contactInfo?.email}
+          </Descriptions.Item>
         </Descriptions>
         <Descriptions
           labelStyle={labelStyle}
@@ -32,10 +39,14 @@ export const ContactInfoContainer = () => {
           column={1}
         >
           <Descriptions.Item label="Monday-Friday">
-            08:30-17:30
+            {contactInfo?.weekdayHours}
           </Descriptions.Item>
-          <Descriptions.Item label="Saturday">10:00-15:00</Descriptions.Item>
-          <Descriptions.Item label="Sunday">Closed</Descriptions.Item>
+          <Descriptions.Item label="Saturday">
+            {contactInfo?.saturdayHours}
+          </Descriptions.Item>
+          <Descriptions.Item label="Sunday">
+            {contactInfo?.sundayHours}
+          </Descriptions.Item>
         </Descriptions>
       </div>
       <iframe

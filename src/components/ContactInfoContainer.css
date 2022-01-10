@@ -42,7 +42,7 @@
   }
 }
 
-@media screen and (max-height: 700px) {
+@media screen and (max-height: 768px) and (orientation: landscape) {
   .contact-info-container>* {
     width: 50%;
     max-height: 90vh;

@@ -3,10 +3,12 @@ import { Layout, Menu } from "antd";
 import {
   FileTextOutlined,
   FolderOutlined,
+  PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet } from "react-router-dom";
 import SubMenu from "antd/lib/menu/SubMenu";
+import "./AdminPage.css";
 
 const { Content, Sider } = Layout;
 
@@ -33,18 +35,16 @@ const AdminPage = () => {
           collapsible
           collapsed={isCollapsed}
           onCollapse={toggleCollapse}
-          collapsedWidth={"5em"}
+          collapsedWidth={"3em"}
           width={"15em"}
-          style={{
-            overflow: "auto",
-            height: "100vh",
-            position: "fixed",
-            left: 0,
-            zIndex: 11,
-          }}
+          className="admin-side-menu"
         >
           {/* <div className="logo" /> */}
           <Menu theme="dark" defaultSelectedKeys={[]} mode="inline">
+            <Menu.Item key="0" icon={<PlusOutlined />}>
+              <span>New Order</span>
+              <Link to={"orders/new"} />
+            </Menu.Item>
             <Menu.Item key="1" icon={<FileTextOutlined />}>
               <span>Orders</span>
               <Link to={"orders"} />
@@ -64,30 +64,24 @@ const AdminPage = () => {
               </Menu.Item>
               <Menu.Item key="4" icon={<SettingOutlined />}>
                 <span>Biographies</span>
+                <Link to={"bios"} />
               </Menu.Item>
               <Menu.Item key="5" icon={<SettingOutlined />}>
                 <span>Contact Info</span>
+                <Link to={"contactInfo"} />
               </Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
         <Layout
-          className="site-layout"
-          style={{ marginLeft: isCollapsed ? "5em" : "15em" }}
+          className="admin-layout"
+          style={{ marginLeft: isCollapsed ? "3em" : "15em" }}
         >
-          {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
           <Content>
-            {/* <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb> */}
-            <div className="site-layout-background">
+            <div className="admin-layout-background">
               <Outlet />
             </div>
           </Content>
-          {/* <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer> */}
         </Layout>
       </Layout>
     </>

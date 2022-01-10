@@ -81,7 +81,7 @@
   max-width: 500px;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   border: none;
 }
 
@@ -122,13 +122,6 @@
     max-height: calc(var(--vh, 1vh) * 90);
   }
 
-  img {
-    max-height: 30vh;
-    max-height: calc(var(--vh, 1vh) * 30);
-    max-width: 80vw;
-    object-fit: cover;
-  }
-
   .carousel-button {
     bottom: 2em;
   }
@@ -146,5 +139,10 @@
 
   .product-carousel .ant-card {
     max-width: 400px;
+  }
+
+  .product-carousel img {
+    height: 50vh;
+    height: calc(var(--vh, 1vh) * 50);
   }
 }

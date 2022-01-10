@@ -1,17 +1,15 @@
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Row } from "antd";
+import { Button, Card, Col, Row, Image } from "antd";
 import Meta from "antd/lib/card/Meta";
 import Carousel, { CarouselRef } from "antd/lib/carousel";
 import { useEffect, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { loadProducts } from "../store/productsSlice";
+import { useAppSelector } from "../hooks";
 import "./ProductCarousel.css";
 
-const DB_URI = process.env.REACT_APP_DB_URI as string;
+const FALLBACK_IMAGE = process.env.REACT_APP_FALLBACK_IMAGE as string;
 
 export const ProductCarousel = () => {
   const products = useAppSelector((state) => state.products.products);
-  const dispatch = useAppDispatch();
 
   const carouselRef = useRef<CarouselRef>(null);
   const [carouselSettings, setCarouselSettings] = useState({
@@ -21,7 +19,17 @@ export const ProductCarousel = () => {
   });
 
   const createCard = (product: Product) => (
-    <Card hoverable cover={<img alt="" src={product.imageUrl} />}>
+    <Card
+      hoverable
+      cover={
+        <Image
+          alt={product.title}
+          src={product.imageUrl}
+          fallback={FALLBACK_IMAGE}
+          preview={false}
+        />
+      }
+    >
       <Meta title={product.title} description={product.desc} />
     </Card>
   );
@@ -70,13 +78,6 @@ export const ProductCarousel = () => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await fetch(`${DB_URI}/products`);
-      const data = await res.json();
-      dispatch(loadProducts(data));
-    };
-    fetchProducts();
-
     const handleResize = () => {
       setCarouselSettings(() => {
         if (window.innerWidth <= 768)
@@ -98,7 +99,7 @@ export const ProductCarousel = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="product-carousel">

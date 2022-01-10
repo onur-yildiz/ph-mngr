@@ -8,12 +8,17 @@ import { BackTop } from "antd";
 import { NavBar } from "../components/NavBar";
 import { isMobile } from "react-device-detect";
 import Title from "antd/lib/typography/Title";
+import { useAppDispatch } from "../hooks";
+import { fetchProducts } from "../store/productsSlice";
+import { fetchContactInfo } from "../store/contactInfoSlice";
+import { fetchBios } from "../store/biographiesSlice";
 
 const HomePage = () => {
   const sectionColors = ["#023047", "#3d5a80", "#023047", "#3d5a80", "#023047"];
   const sectionHeightProportion = 1.3;
   const scrollSectionHeight = window.innerHeight * sectionHeightProportion;
   const viewHeight = window.innerHeight;
+  const appDispatch = useAppDispatch();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionsRef = useRef<HTMLDivElement[]>([]);
@@ -99,6 +104,12 @@ const HomePage = () => {
       container.removeEventListener("scroll", handleScrollNav);
     };
   }, []);
+
+  useEffect(() => {
+    appDispatch(fetchProducts());
+    appDispatch(fetchBios());
+    appDispatch(fetchContactInfo());
+  }, [appDispatch]);
 
   useEffect(() => {
     const displayBackTop = () => {

@@ -1,61 +1,83 @@
-import { Button, Table, Tooltip, Modal } from "antd";
-import { CheckOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { format, parseISO } from "date-fns";
-import { FC, useEffect, useState } from "react";
+import { Modal } from "antd";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { loadOrders, toggleDone } from "../store/ordersSlice";
+import { fetchOrders, updateOrder } from "../store/ordersSlice";
 import { ColumnsType } from "antd/lib/table";
 import "./OrdersTable.css";
+import CustomTable from "./CustomTable";
+import ActionButtonBar from "./ActionButtonBar";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const { confirm } = Modal;
 
-const DB_URI = process.env.REACT_APP_DB_URI as string;
-
-const OrderList: FC<{ isArchive?: boolean }> = (props) => {
-  const [scrollHeight, setScrollHeight] = useState(window.innerHeight * 0.8);
+const OrdersTable = () => {
   const orders = useAppSelector((state) => state.orders.orders);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const completeOrder = (order: Order) => {
-    dispatch(toggleDone(order));
-  };
-
-  const showDeleteConfirm = (order: Order) => {
+  const showCompleteConfirm = (order: Order) => {
     confirm({
-      title: "Are you sure complete this task?",
+      title: `Complete Order "${order.id}"`,
       icon: <ExclamationCircleOutlined />,
-      content: "Some descriptions",
+      content: `Are you sure to complete this order?`,
       okText: "Yes",
       okType: "primary",
       cancelText: "No",
-      onOk() {
-        completeOrder(order);
-      },
-      onCancel() {
-        console.log("Cancel");
+      async onOk() {
+        const newOrder = { ...order, done: true } as Order;
+        await dispatch(updateOrder({ orderId: order.id, newOrder }));
       },
     });
   };
 
   const columns: ColumnsType<Order> = [
-    { title: "ID", dataIndex: "id", key: "id" },
-    { title: "Name", dataIndex: "customerName", key: "customerName" },
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      sorter: (a, b) => parseInt(a.id) - parseInt(b.id),
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Name",
+      dataIndex: "customerName",
+      key: "customerName",
+      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
+      sortDirections: ["ascend", "descend"],
+    },
     { title: "Phone Number", dataIndex: "phoneNumber", key: "phoneNumber" },
-    { title: "Email", dataIndex: "email", key: "email" },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
+      sortDirections: ["ascend", "descend"],
+    },
     {
       title: "Date of Order",
       dataIndex: "",
       key: "orderDate",
+      sorter: (a, b) => Date.parse(a.orderDate) - Date.parse(b.orderDate),
+      sortDirections: ["descend"],
       render: (order: Order) => (
-        <span>{format(parseISO(order.orderDate), "dd.MM.yyyy")}</span>
+        <span>{moment(order.orderDate).format("L")}</span>
       ),
     },
     {
       title: "Deadline",
       dataIndex: "",
       key: "deadline",
+      sorter: (a, b) => Date.parse(a.deadline) - Date.parse(b.deadline),
+      sortDirections: ["ascend", "descend"],
       render: (order: Order) => (
-        <span>{format(parseISO(order.deadline), "dd.MM.yyyy")}</span>
+        <span>{moment(order.deadline).format("L")}</span>
       ),
     },
     {
@@ -63,73 +85,50 @@ const OrderList: FC<{ isArchive?: boolean }> = (props) => {
       dataIndex: "",
       key: "x",
       align: "center",
+      fixed: "right",
       render: (order: Order) => (
-        <div className="table-action-container">
-          <Tooltip title="done">
-            <Button
-              className="table-action-button"
-              shape="circle"
-              icon={<CheckOutlined />}
-              onClick={() => {
-                showDeleteConfirm(order);
-              }}
-            />
-          </Tooltip>
-        </div>
+        <ActionButtonBar
+          buttons={[
+            {
+              tooltipTitle: "Complete",
+              icon: <CheckOutlined />,
+              onClick: () => showCompleteConfirm(order),
+            },
+            {
+              tooltipTitle: "Edit",
+              icon: <EditOutlined />,
+              onClick: () => {
+                navigate(`edit/${order.id}`);
+              },
+            },
+            {
+              tooltipTitle: "Cancel",
+              icon: <CloseOutlined />,
+              danger: true,
+              onClick: () => {},
+            },
+          ]}
+        />
       ),
     },
   ];
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      const res = await fetch(`${DB_URI}/orders`);
-      const data = await res.json();
-      dispatch(loadOrders(data));
-    };
-
-    fetchOrders();
+    dispatch(fetchOrders());
   }, [dispatch]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setScrollHeight(window.innerHeight * 0.8);
-    };
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
-    <div className="table">
-      <Table
-        size="small"
-        columns={columns}
-        scroll={{
-          y: scrollHeight,
-          x: "max-content",
-        }}
-        expandable={{
-          expandRowByClick: true,
-          expandedRowRender: (record: Order) => <span>{record.desc}</span>,
-          rowExpandable: (record: Order) => record.desc?.trim().length > 0,
-        }}
-        dataSource={orders.filter((order) => order.done === props.isArchive)}
-        rowKey="id"
-        pagination={{
-          pageSize: 20,
-          hideOnSinglePage: true,
-          responsive: true,
-          showSizeChanger: false,
-          position: ["bottomCenter"],
-        }}
-      />
-    </div>
+    <CustomTable
+      size="small"
+      columns={columns}
+      data={orders}
+      expandable={{
+        expandRowByClick: true,
+        expandedRowRender: (record) => <span>{record.desc}</span>,
+        rowExpandable: (record) => record.desc?.trim().length > 0,
+      }}
+    />
   );
 };
 
-OrderList.defaultProps = {
-  isArchive: false,
-};
-
-export default OrderList;
+export default OrdersTable;

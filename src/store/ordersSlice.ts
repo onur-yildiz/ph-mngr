@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const DB_URI = process.env.REACT_APP_DB_URI as string;
+
 interface OrdersState {
   orders: Order[];
-  showArchived: boolean;
+  archivedOrders: Order[];
 }
 
 const initialState: OrdersState = {
   orders: [],
-  showArchived: false,
+  archivedOrders: [],
 };
 
 const ordersSlice = createSlice({
@@ -19,20 +21,100 @@ const ordersSlice = createSlice({
       state.orders = action.payload;
       console.log(state.orders);
     },
-    add(state, action) {
-      console.log("add");
+    loadArchive(state, action) {
+      console.log("loadArchive");
+      state.archivedOrders = action.payload;
+      console.log(state.archivedOrders);
+    },
+    _addOrder(state, action) {
+      console.log("addOrder");
       state.orders.push(state.orders[0]);
     },
-    toggleDone(state, action) {
-      console.log("toggleDone");
-      const order = state.orders.find(
+    _updateOrder(state, action) {
+      console.log("updateOrder");
+      const index = state.orders.findIndex(
         (order) => order.id === action.payload.id
       );
-      if (order) order.done = !order.done;
+      const updatedOrder = { ...state.orders[index], ...action.payload };
+      if (action.payload.done) {
+        state.orders.splice(index, 1);
+        state.archivedOrders.push(updatedOrder);
+      } else state.orders[index] = updatedOrder;
     },
   },
 });
 
-export const { loadOrders, add, toggleDone } = ordersSlice.actions;
+export const fetchOrders = () => {
+  return async (dispatch: any) => {
+    try {
+      const response = await fetch(`${DB_URI}/orders?done=false`);
+      if (response.ok) {
+        const orders = await response.json();
+        dispatch(loadOrders(orders));
+      } else throw new Error(`${response.status} - ${response.statusText}`);
+    } catch (error) {
+      throw new Error("Error fetching orders: " + error);
+    }
+  };
+};
+
+export const fetchArchive = () => {
+  return async (dispatch: any) => {
+    try {
+      const response = await fetch(`${DB_URI}/orders?done=true`);
+      if (response.ok) {
+        const archivedOrders = await response.json();
+        dispatch(loadArchive(archivedOrders));
+      } else throw new Error(`${response.status} - ${response.statusText}`);
+    } catch (error) {
+      throw new Error("Error fetching archived orders: " + error);
+    }
+  };
+};
+
+export const addOrder = (order: Order) => {
+  return async (dispatch: any) => {
+    try {
+      const response = await fetch(`${DB_URI}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      });
+      if (response.ok) {
+        const newOrder = await response.json();
+        dispatch(_addOrder(newOrder));
+      } else throw new Error(`${response.status} - ${response.statusText}`);
+    } catch (error) {
+      throw new Error("Error adding order: " + error);
+    }
+  };
+};
+
+type UpdateOrderPayload = {
+  orderId: string;
+  newOrder: Partial<Order>;
+};
+export const updateOrder = ({ newOrder, orderId }: UpdateOrderPayload) => {
+  return async (dispatch: any) => {
+    try {
+      const response = await fetch(`${DB_URI}/orders/${orderId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newOrder),
+      });
+      if (response.ok) dispatch(_updateOrder(newOrder));
+      else throw new Error(`${response.status} - ${response.statusText}`);
+    } catch (error) {
+      throw new Error("Error updating order: " + error);
+    }
+  };
+};
+
+export const { loadOrders, loadArchive, _addOrder, _updateOrder } =
+  ordersSlice.actions;
 
 export default ordersSlice.reducer;

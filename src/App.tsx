@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import OrderList from "./components/OrdersTable";
+import ArchivedOrdersTable from "./components/ArchivedOrdersTable";
+import BioForm from "./components/BioForm";
+import BiographiesTable from "./components/BiographiesTable";
+import ContactInfoForm from "./components/ContactInfoForm";
+import OrderForm from "./components/OrderForm";
+import OrdersTable from "./components/OrdersTable";
 import ProductForm from "./components/ProductForm";
 import ProductsTable from "./components/ProductsTable";
 import AdminPage from "./pages/AdminPage";
@@ -35,15 +40,17 @@ export default function App() {
             </main>
           }
         />
-        <Route path="orders" element={<OrderList />} />
-        <Route path="archive" element={<OrderList isArchive={true} />} />
+        <Route path="orders" element={<OrdersTable />} />
+        <Route path="orders/new" element={<OrderForm />} />
+        <Route path="orders/edit/:orderId" element={<OrderForm />} />
+        <Route path="archive" element={<ArchivedOrdersTable />} />
         <Route path="products" element={<ProductsTable />} />
-        <Route path="products/create" element={<ProductForm />} />
+        <Route path="products/new" element={<ProductForm />} />
         <Route path="products/edit/:productId" element={<ProductForm />} />
-        <Route path="bios/" element={<></>} />
-        <Route path="bios/edit/:bioId" element={<></>} />
-        <Route path="contactInfo/" element={<></>} />
-        <Route path="contactInfo/edit" element={<></>} />
+        <Route path="bios/" element={<BiographiesTable />} />
+        <Route path="bios/new" element={<BioForm />} />
+        <Route path="bios/edit/:bioId" element={<BioForm />} />
+        <Route path="contactInfo" element={<ContactInfoForm />} />
       </Route>
     </Routes>
   );
